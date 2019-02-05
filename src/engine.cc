@@ -178,6 +178,9 @@ void Engine::init(Game &game)
 		panic();
 	}
 
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(gl_error, 0);
+
 	// Create rendering viewport
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(CLEAR, 1.0f);
