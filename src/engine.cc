@@ -248,6 +248,18 @@ void Engine::init(Game &game)
 		// Execute game update hook
 		game.update();
 
+		// Update view and projection matrices
+		float aspect = (float)this->width / this->height;
+		Mat4 proj = Mat4::perspective(60.0f, aspect, 0.1f, 128);
+		Mat4 proj_view = proj * this->view;
+
+		glUniformMatrix4fv(
+			proj_view_loc,
+			1,
+			GL_FALSE,
+			proj_view.values
+		);
+
 		/* Rendering */
 
 		glClear(GL_COLOR_BUFFER_BIT);
