@@ -3,6 +3,14 @@
 
 #define PI 3.14159265
 
+float Vec4::dot(Vec4 other)
+{
+	return    this->values[0] * other.values[0]
+		+ this->values[1] * other.values[1]
+		+ this->values[2] * other.values[2]
+		+ this->values[3] * other.values[3];
+}
+
 Mat4::Mat4() {}
 
 Mat4::Mat4(float values[16])
