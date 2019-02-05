@@ -195,7 +195,10 @@ void Engine::init(Game &game)
 		panic();
 	}
 
-	glUseProgram(program);
+	// Uniforms
+	GLint color_loc = glGetUniformLocation(program, "color");
+
+	glUseProgram(program); // Single core shader
 	glDeleteShader(vert);
 	glDeleteShader(frag);
 
