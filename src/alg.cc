@@ -27,6 +27,31 @@ Vec2 Vec2::norm()
 	};
 }
 
+float Vec3::mag_squared()
+{
+	return (this->x * this->x) + (this->y * this->y) + (this->z * this->z);
+}
+
+float Vec3::mag()
+{
+	return sqrt(this->mag_squared());
+}
+
+Vec3 Vec3::norm()
+{
+	float mag = this->mag();
+
+	if (mag == 0) {
+		return Vec3 { 0, 0, 0 };
+	}
+
+	return Vec3 {
+		this->x / mag,
+		this->y / mag,
+		this->z / mag,
+	};
+}
+
 float Vec4::dot(Vec4 other)
 {
 	return    this->values[0] * other.values[0]
