@@ -52,6 +52,33 @@ Vec3 Vec3::norm()
 	};
 }
 
+Vec3 Vec3::operator+(const Vec3 &b)
+{
+	return Vec3 {
+		this->x + b.x,
+		this->y + b.y,
+		this->z + b.z,
+	};
+}
+
+Vec3 Vec3::operator-(const Vec3 &b)
+{
+	return Vec3 {
+		this->x - b.x,
+		this->y - b.y,
+		this->z - b.z,
+	};
+}
+
+Vec3 Vec3::operator+=(const Vec3 &b)
+{
+	this->x += b.x;
+	this->y += b.y;
+	this->z += b.z;
+
+	return *this;
+}
+
 float Vec4::dot(Vec4 other)
 {
 	return    this->values[0] * other.values[0]
