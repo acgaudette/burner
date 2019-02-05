@@ -126,6 +126,7 @@ Engine::Engine(): count(0), width(WIDTH), height(HEIGHT), view(Mat4::id())
 
 void Engine::init(Game &game)
 {
+	// Window debugging
 	glfwSetErrorCallback(window_error);
 
 	if (!glfwInit()) {
@@ -178,6 +179,7 @@ void Engine::init(Game &game)
 		panic();
 	}
 
+	// OpenGL debugging
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_error, 0);
 
