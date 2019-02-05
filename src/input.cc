@@ -13,3 +13,21 @@ int Input::key_to_glfw(Key key)
 	default: return -1;
 	}
 }
+
+bool Input::down(Key key)
+{
+	State state = this->keys[key];
+	return state.curr && !state.last;
+}
+
+bool Input::up(Key key)
+{
+	State state = this->keys[key];
+	return !state.curr && state.last;
+}
+
+bool Input::held(Key key)
+{
+	State state = this->keys[key];
+	return state.curr && state.last;
+}
