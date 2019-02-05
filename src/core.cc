@@ -99,3 +99,42 @@ void resize(GLFWwindow *window, int width, int height)
 	glViewport(0, 0, width, height);
 	printf("Window resize: %dx%d\n", width, height);
 }
+
+int main()
+{
+	glfwSetErrorCallback(window_error);
+
+	if (!glfwInit()) {
+		fprintf(stderr, "Failed to initialize window\n");
+		panic();
+	}
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, MAJOR);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, MINOR);
+
+	// Use core profile only
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	/* Create window */
+
+	GLFWwindow *window = glfwCreateWindow(
+		WIDTH,
+		HEIGHT,
+		TITLE,
+		NULL,
+		NULL
+	);
+
+	if (!window) {
+		fprintf(stderr, "Failed to create window\n");
+		panic();
+	}
+
+	// Register resize callback
+	glfwSetFramebufferSizeCallback(window, resize);
+
+	// Exit
+	glfwTerminate();
+	printf("Terminated.\n");
+	exit(0);
+}
