@@ -61,6 +61,11 @@ Vec3 Vec3::cross(Vec3 other)
 	};
 }
 
+Vec3 Vec3::normal(Vec3 a, Vec3 b, Vec3 c)
+{
+	return (b - a).cross(c - a);
+}
+
 Vec3 Vec3::operator+(const Vec3 &b)
 {
 	return Vec3 {
