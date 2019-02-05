@@ -219,14 +219,34 @@ void Engine::init(Game &game)
 			glfwSetWindowShouldClose(window, true);
 		}
 
-		// Rendering
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		// Execute game update hook
 		game.update();
 
-		// Double buffer
-		glfwSwapBuffers(window);
+		/* Rendering */
+
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Render all meshes
+		for (size_t i = 0; i < this->count; ++i) {
+			Mesh *mesh = this->meshes[i];
+			glBindVertexArray(this->objects[i]);
+
+			glUniform3f(
+				color_loc,
+				mesh->color.r,
+				mesh->color.g,
+				mesh->color.b
+			);
+
+			glDrawElements(
+				GL_TRIANGLES,
+				mesh->index_count,
+				GL_UNSIGNED_INT,
+				0
+			);
+		}
+
+		glfwSwapBuffers(window); // Double buffer
 	}
 
 	// Exit
