@@ -233,7 +233,7 @@ void Engine::init(Game &game)
 	/* Main loop */
 
 	double time;
-	double last_time = 0;;
+	double last_time = 0;
 
 	while (true) {
 		if (glfwWindowShouldClose(window)) {
@@ -277,7 +277,7 @@ void Engine::init(Game &game)
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Render all meshes
+		// Render all entities
 		for (size_t i = 0; i < this->enty_count; ++i) {
 			size_t mesh_id = this->mesh_ids[i];
 			Mesh *mesh = this->meshes[mesh_id];
