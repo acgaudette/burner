@@ -18,3 +18,8 @@ void panic()
 	printf("Terminated unexpectedly.\n");
 	exit(1);
 }
+
+void window_error(int error, const char *message)
+{
+	fprintf(stderr, "Window error: %s\n", message);
+}
