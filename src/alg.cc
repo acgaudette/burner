@@ -3,6 +3,16 @@
 
 #define PI 3.14159265
 
+float Vec2::mag_squared()
+{
+	return (this->x * this->x) + (this->y * this->y);
+}
+
+float Vec2::mag()
+{
+	return sqrt(this->mag_squared());
+}
+
 float Vec4::dot(Vec4 other)
 {
 	return    this->values[0] * other.values[0]
