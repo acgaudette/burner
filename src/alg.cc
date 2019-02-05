@@ -34,6 +34,30 @@ Mat4 Mat4::id()
 	return Mat4(values);
 }
 
+Mat4 Mat4::translation(float x, float y, float z)
+{
+	float values[] = {
+		1, 0, 0, x,
+		0, 1, 0, y,
+		0, 0, 1, z,
+		0, 0, 0, 1
+	};
+
+	return Mat4(values);
+}
+
+Mat4 Mat4::rotation_y(float rad)
+{
+	float values[] = {
+		 cos(rad), 0, sin(rad), 0,
+		        0, 1,        0, 0,
+		-sin(rad), 0, cos(rad), 0,
+		        0, 0,        0, 1
+	};
+
+	return Mat4(values);
+}
+
 Mat4 Mat4::perspective(float fov, float aspect, float near, float far)
 {
 	float half_angle = (0.5 * fov) * PI / 180;
