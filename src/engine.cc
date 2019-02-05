@@ -229,6 +229,7 @@ void Engine::init(Game &game)
 
 	// Execute game start hook
 	game.start();
+	Input input;
 
 	/* Main loop */
 
@@ -247,6 +248,14 @@ void Engine::init(Game &game)
 			glfwSetWindowShouldClose(window, true);
 		}
 
+		for (int i = 0; i < Key::_key_count; ++i) {
+			input.keys[i].last = input.keys[i].curr;
+			input.keys[i].curr = glfwGetKey(
+				window,
+				Input::key_to_glfw((Key)i)
+			) == GLFW_PRESS;
+		}
+
 		// Recompute screen dimensions
 		GLint viewport[4];
 		glGetIntegerv(GL_VIEWPORT, viewport);
@@ -259,7 +268,7 @@ void Engine::init(Game &game)
 		double delta = time - last_time;
 
 		// Execute game update hook
-		game.update(time, delta);
+		game.update(input, time, delta);
 
 		// Update view and projection matrices
 		float aspect = (float)this->width / this->height;
