@@ -232,6 +232,9 @@ void Engine::init(Game &game)
 
 	/* Main loop */
 
+	double time;
+	double last_time = 0;;
+
 	while (true) {
 		if (glfwWindowShouldClose(window)) {
 			break;
@@ -244,13 +247,19 @@ void Engine::init(Game &game)
 			glfwSetWindowShouldClose(window, true);
 		}
 
+		// Recompute screen dimensions
 		GLint viewport[4];
 		glGetIntegerv(GL_VIEWPORT, viewport);
 		this->width = viewport[2];
 		this->height = viewport[3];
 
+		// Time
+		last_time = time;
+		time = glfwGetTime();
+		double delta = time - last_time;
+
 		// Execute game update hook
-		game.update();
+		game.update(time, delta);
 
 		// Update view and projection matrices
 		float aspect = (float)this->width / this->height;
