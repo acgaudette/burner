@@ -3,6 +3,12 @@
 
 #include "game.h"
 
-void init_engine(Game&);
+
+struct Engine
+{
+	Engine();
+
+	void init(Game&);
+};
 
 #endif
