@@ -1,9 +1,11 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include "render.h"
+
 struct Mesh
 {
-	float *vertices;
+	Vertex *vertices;
 	size_t vertex_count;
 
 	unsigned int *indices;
