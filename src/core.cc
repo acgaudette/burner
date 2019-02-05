@@ -11,3 +11,10 @@
 #define MAJOR 4
 #define MINOR 0
 #define LOG_BUF 1024
+
+void panic()
+{
+	glfwTerminate();
+	printf("Terminated unexpectedly.\n");
+	exit(1);
+}
