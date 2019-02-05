@@ -53,3 +53,29 @@ Mat4 Mat4::perspective(float fov, float aspect, float near, float far)
 
 	return Mat4(values);
 }
+
+Mat4 Mat4::operator*(const Mat4 &b)
+{
+	Mat4 a = *this;
+
+	// Rows
+	Vec4 ax = {{ a.values[0], a.values[4], a.values[8],  a.values[12] }};
+	Vec4 ay = {{ a.values[1], a.values[5], a.values[9],  a.values[13] }};
+	Vec4 az = {{ a.values[2], a.values[6], a.values[10], a.values[14] }};
+	Vec4 aw = {{ a.values[3], a.values[7], a.values[11], a.values[15] }};
+
+	// Columns
+	Vec4 bx = {{ b.values[0],  b.values[1],  b.values[2],  b.values[3]  }};
+	Vec4 by = {{ b.values[4],  b.values[5],  b.values[6],  b.values[7]  }};
+	Vec4 bz = {{ b.values[8],  b.values[9],  b.values[10], b.values[11] }};
+	Vec4 bw = {{ b.values[12], b.values[13], b.values[14], b.values[15] }};
+
+	float values[] = {
+		ax.dot(bx), ax.dot(by), ax.dot(bz), ax.dot(bw),
+		ay.dot(bx), ay.dot(by), ay.dot(bz), ay.dot(bw),
+		az.dot(bx), az.dot(by), az.dot(bz), az.dot(bw),
+		aw.dot(bx), aw.dot(by), aw.dot(bz), aw.dot(bw)
+	};
+
+	return Mat4(values);
+}
