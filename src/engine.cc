@@ -117,12 +117,13 @@ void resize(GLFWwindow *window, int width, int height)
 	printf("Window resize: %dx%d\n", width, height);
 }
 
-Engine::Engine(): count(0), width(WIDTH), height(HEIGHT), view(Mat4::id())
-{
-	for (size_t i = 0; i < MAX_MESH; ++i) {
-		this->meshes[i] = nullptr;
-	}
-}
+Engine::Engine():
+	width(WIDTH),
+	height(HEIGHT),
+	mesh_count(0),
+	enty_count(0),
+	view(Mat4::id())
+{}
 
 void Engine::init(Game &game)
 {
