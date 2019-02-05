@@ -185,6 +185,7 @@ void Engine::init(Game &game)
 
 	// Create rendering viewport
 	glViewport(0, 0, WIDTH, HEIGHT);
+	glEnable(GL_DEPTH_TEST);
 	glClearColor(CLEAR, 1.0f);
 
 	/* Shaders */
@@ -264,7 +265,7 @@ void Engine::init(Game &game)
 
 		/* Rendering */
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Render all meshes
 		for (size_t i = 0; i < this->count; ++i) {
