@@ -23,3 +23,10 @@ void window_error(int error, const char *message)
 {
 	fprintf(stderr, "Window error: %s\n", message);
 }
+
+void resize(GLFWwindow *window, int width, int height)
+{
+	// Resize OpenGL viewport
+	glViewport(0, 0, width, height);
+	printf("Window resize: %dx%d\n", width, height);
+}
