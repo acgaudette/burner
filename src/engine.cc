@@ -83,6 +83,7 @@ GLuint load_shader(const char *filename, GLenum type, char *log)
 			log
 		);
 
+		fprintf(stderr, "\"\n%s\n\"\n", buffer);
 		panic();
 	}
 
