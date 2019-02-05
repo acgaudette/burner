@@ -158,6 +158,39 @@ int main()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(CLEAR, 1.0f);
 
+	/* Shaders */
+
+	char gl_log[LOG_BUF];
+
+	GLuint vert = load_shader(
+		"shaders/core.vert",
+		GL_VERTEX_SHADER,
+		gl_log
+	);
+
+	GLuint frag = load_shader(
+		"shaders/core.frag",
+		GL_FRAGMENT_SHADER,
+		gl_log
+	);
+
+	GLuint program;
+	program = glCreateProgram();
+	glAttachShader(program, vert);
+	glAttachShader(program, frag);
+	glLinkProgram(program);
+
+	int result;
+	glGetProgramiv(program, GL_LINK_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(program, LOG_BUF, NULL, gl_log);
+		panic();
+	}
+
+	glUseProgram(program);
+	glDeleteShader(vert);
+	glDeleteShader(frag);
+
 	// Exit
 	glfwTerminate();
 	printf("Terminated.\n");
