@@ -15,6 +15,8 @@ struct Engine
 	int width;
 	int height;
 
+	Mat4 view;
+
 	Engine();
 
 	void init(Game&);
