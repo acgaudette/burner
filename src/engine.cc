@@ -215,6 +215,7 @@ void Engine::init(Game &game)
 	glGetProgramiv(program, GL_LINK_STATUS, &result);
 	if (!result) {
 		glGetProgramInfoLog(program, LOG_BUF, NULL, gl_log);
+		fprintf(stderr, "Shader %s", gl_log);
 		panic();
 	}
 
