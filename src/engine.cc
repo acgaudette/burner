@@ -216,6 +216,8 @@ void Engine::init(Game &game)
 
 	// Uniforms
 	GLint color_loc = glGetUniformLocation(program, "color");
+	GLint model_loc = glGetUniformLocation(program, "model");
+	GLint proj_view_loc  = glGetUniformLocation(program, "proj_view");
 
 	glUseProgram(program); // Single core shader
 	glDeleteShader(vert);
