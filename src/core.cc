@@ -19,6 +19,75 @@ void panic()
 	exit(1);
 }
 
+GLuint load_shader(const char *filename, GLenum type, char *log)
+{
+	/* Read file into string */
+
+	FILE *file = fopen(filename, "r");
+
+	if (!file) {
+		perror("Error");
+		panic();
+	}
+
+	if (fseek(file, 0, SEEK_END) == -1) {
+		perror("Error");
+		panic();
+	}
+
+	errno = 0;
+	long len = ftell(file);
+	if (errno) {
+		perror("Error");
+		panic();
+	}
+
+	// Rewind
+	if (fseek(file, 0, SEEK_SET) == -1) {
+		perror("Error");
+		panic();
+	}
+
+	char *buffer = (char*)malloc(len);
+
+	if (!buffer) {
+		perror("Error");
+		panic();
+	}
+
+	fread(buffer, 1, len, file);
+	if (ferror(file)) {
+		fprintf(stderr, "Error reading file\n");
+		panic();
+	}
+
+	if (fclose(file)) {
+		perror("Error");
+		panic();
+	}
+
+	GLuint shader = glCreateShader(type);
+	glShaderSource(shader, 1, &buffer, NULL);
+	glCompileShader(shader);
+
+	int result;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+	if (!result) {
+		glGetShaderInfoLog(shader, LOG_BUF, NULL, log);
+
+		fprintf(
+			stderr,
+			"Compilation error in \"%s\":\n%s",
+			filename,
+			log
+		);
+
+		panic();
+	}
+
+	return shader;
+}
+
 void window_error(int error, const char *message)
 {
 	fprintf(stderr, "Window error: %s\n", message);
