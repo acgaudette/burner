@@ -382,3 +382,8 @@ size_t Engine::add_entity(size_t mesh_id)
 
 	return this->enty_count++;
 }
+
+void Engine::update_entity(size_t id, Instance data)
+{
+	this->enty_data[id] = data;
+}
