@@ -24,6 +24,8 @@ struct Mat4
 	Mat4(float[16]);
 
 	static Mat4 id();
+	static Mat4 translation(float, float, float);
+	static Mat4 rotation_y(float);
 	static Mat4 perspective(float, float, float, float);
 
 	Mat4 operator*(const Mat4&);
