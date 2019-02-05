@@ -12,6 +12,10 @@ struct Vec2
 {
 	float x;
 	float y;
+
+	float mag_squared();
+	float mag();
+	Vec2 norm();
 };
 
 struct Vec4
