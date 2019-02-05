@@ -269,22 +269,25 @@ void Engine::init(Game &game)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Render all meshes
-		for (size_t i = 0; i < this->count; ++i) {
-			Mesh *mesh = this->meshes[i];
-			glBindVertexArray(this->objects[i]);
+		for (size_t i = 0; i < this->enty_count; ++i) {
+			size_t mesh_id = this->mesh_ids[i];
+			Mesh *mesh = this->meshes[mesh_id];
+			glBindVertexArray(this->objects[mesh_id]);
+
+			Instance instance = this->enty_data[i];
 
 			glUniform3f(
 				color_loc,
-				mesh->color.r,
-				mesh->color.g,
-				mesh->color.b
+				instance.color.r,
+				instance.color.g,
+				instance.color.b
 			);
 
 			glUniformMatrix4fv(
 				model_loc,
 				1,
 				GL_FALSE,
-				mesh->model.values
+				instance.model.values
 			);
 
 			glDrawElements(
