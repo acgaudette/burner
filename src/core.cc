@@ -101,6 +101,13 @@ void resize(GLFWwindow *window, int width, int height)
 	printf("Window resize: %dx%d\n", width, height);
 }
 
+Engine::Engine(): count(0)
+{
+	for (size_t i = 0; i < MAX_MESH; ++i) {
+		this->meshes[i] = nullptr;
+	}
+}
+
 void Engine::init(Game &game)
 {
 	glfwSetErrorCallback(window_error);
