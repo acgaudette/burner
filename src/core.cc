@@ -101,7 +101,7 @@ void resize(GLFWwindow *window, int width, int height)
 	printf("Window resize: %dx%d\n", width, height);
 }
 
-int main()
+void init_engine(Game &game)
 {
 	glfwSetErrorCallback(window_error);
 
