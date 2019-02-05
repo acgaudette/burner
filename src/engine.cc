@@ -323,8 +323,7 @@ size_t Engine::add_mesh(Mesh *mesh)
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(
 		GL_ARRAY_BUFFER,
-		// FIXME: const
-		3 * mesh->vertex_count * sizeof(float),
+		mesh->vertex_count * 3 * sizeof(float),
 		mesh->vertices,
 		GL_STATIC_DRAW
 	);
@@ -343,7 +342,7 @@ size_t Engine::add_mesh(Mesh *mesh)
 	// Vertex attributes
 	glVertexAttribPointer(
 		0, // Location
-		mesh->vertex_count,
+		3,
 		GL_FLOAT,
 		GL_FALSE,
 		3 * sizeof(float), // Stride
