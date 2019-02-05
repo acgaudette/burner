@@ -307,10 +307,10 @@ void Engine::init(Game &game)
 	exit(0);
 }
 
-void Engine::add_mesh(Mesh *mesh)
+size_t Engine::add_mesh(Mesh *mesh)
 {
 	// Update mesh array
-	this->meshes[this->count] = mesh;
+	this->meshes[this->mesh_count] = mesh;
 
 	// Vertex array object
 	GLuint vao;
@@ -353,13 +353,14 @@ void Engine::add_mesh(Mesh *mesh)
 	glEnableVertexAttribArray(0);
 
 	// Update object array and count
-	this->objects[this->count] = vao;
-	this->count++;
+	this->objects[this->mesh_count] = vao;
 
 	printf(
 		"Added mesh %lu with %lu vertices and %lu indices\n",
-		this->count,
+		this->mesh_count,
 		mesh->vertex_count,
 		mesh->index_count
 	);
+
+	return this->mesh_count++;
 }
