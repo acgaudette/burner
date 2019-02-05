@@ -8,10 +8,15 @@ struct Color
 	float b;
 };
 
+struct Vec2
+{
+	float x;
+	float y;
+};
+
 struct Vec4
 {
 	float values[4];
-
 	float dot(Vec4);
 };
 
