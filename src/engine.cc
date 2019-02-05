@@ -86,6 +86,7 @@ GLuint load_shader(const char *filename, GLenum type, char *log)
 		panic();
 	}
 
+	free(buffer);
 	return shader;
 }
 
