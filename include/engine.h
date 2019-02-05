@@ -26,7 +26,7 @@ struct Engine
 	Engine();
 
 	void init(Game&);
-	void add_mesh(Mesh*);
+	size_t add_mesh(Mesh*);
 };
 
 #endif
