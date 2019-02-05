@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <GL/gl3w.h> // Runtime function loader (core only)
 #include <GLFW/glfw3.h> // OpenGL included
+#include "core.h"
 
 #define WIDTH  1280
 #define HEIGHT 720
