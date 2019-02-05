@@ -11,6 +11,7 @@ struct Mesh
 	unsigned int *indices;
 	size_t index_count;
 
+	Mat4 model;
 	Color color;
 };
 
