@@ -133,6 +133,31 @@ int main()
 	// Register resize callback
 	glfwSetFramebufferSizeCallback(window, resize);
 
+	// Make OpenGL context
+	glfwMakeContextCurrent(window);
+
+	// Load functions at runtime
+	if (gl3wInit()) {
+		fprintf(stderr, "Failed to initialize loader\n");
+		panic();
+	}
+
+	// Check for compatability
+	if (!gl3wIsSupported(MAJOR, MINOR)) {
+		fprintf(
+			stderr,
+			"OpenGL %d.%d is not supported\n",
+			MAJOR,
+			MINOR
+		);
+
+		panic();
+	}
+
+	// Create rendering viewport
+	glViewport(0, 0, WIDTH, HEIGHT);
+	glClearColor(CLEAR, 1.0f);
+
 	// Exit
 	glfwTerminate();
 	printf("Terminated.\n");
