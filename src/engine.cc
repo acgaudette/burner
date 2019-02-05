@@ -240,6 +240,11 @@ void Engine::init(Game &game)
 			glfwSetWindowShouldClose(window, true);
 		}
 
+		GLint viewport[4];
+		glGetIntegerv(GL_VIEWPORT, viewport);
+		this->width = viewport[2];
+		this->height = viewport[3];
+
 		// Execute game update hook
 		game.update();
 
