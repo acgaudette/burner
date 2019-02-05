@@ -276,6 +276,13 @@ void Engine::init(Game &game)
 				mesh->color.b
 			);
 
+			glUniformMatrix4fv(
+				model_loc,
+				1,
+				GL_FALSE,
+				mesh->model.values
+			);
+
 			glDrawElements(
 				GL_TRIANGLES,
 				mesh->index_count,
