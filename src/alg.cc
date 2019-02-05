@@ -10,3 +10,15 @@ Mat4::Mat4(float values[16])
 		}
 	}
 }
+
+Mat4 Mat4::id()
+{
+	float values[] = {
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1
+	};
+
+	return Mat4(values);
+}
