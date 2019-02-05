@@ -52,6 +52,15 @@ Vec3 Vec3::norm()
 	};
 }
 
+Vec3 Vec3::cross(Vec3 other)
+{
+	return Vec3 {
+		this->y * other.z - this->z * other.y,
+		this->z * other.x - this->x * other.z,
+		this->x * other.y - this->y * other.x,
+	};
+}
+
 Vec3 Vec3::operator+(const Vec3 &b)
 {
 	return Vec3 {
