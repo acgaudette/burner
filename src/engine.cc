@@ -326,8 +326,28 @@ void Engine::init(Game &game)
 	exit(0);
 }
 
-size_t Engine::add_mesh(Mesh *mesh)
+size_t Engine::add_mesh(Mesh *mesh, bool compute_normals)
 {
+	// Compute normals
+	if (compute_normals) {
+		for (size_t i = 0; i < mesh->vertex_count - 2; i += 3) {
+			Vec3 normal = Vec3::normal(
+				mesh->vertices[i    ].position,
+				mesh->vertices[i + 1].position,
+				mesh->vertices[i + 2].position
+			);
+
+			mesh->vertices[i    ].normal += normal;
+			mesh->vertices[i + 1].normal += normal;
+			mesh->vertices[i + 2].normal += normal;
+		}
+
+		for (size_t i = 0; i < mesh->vertex_count; ++i) {
+			mesh->vertices[i].normal
+				= mesh->vertices[i].normal.norm();
+		}
+	}
+
 	// Update mesh array
 	this->meshes[this->mesh_count] = mesh;
 
