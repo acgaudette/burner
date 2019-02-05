@@ -364,3 +364,21 @@ size_t Engine::add_mesh(Mesh *mesh)
 
 	return this->mesh_count++;
 }
+
+size_t Engine::add_entity(size_t mesh_id)
+{
+	this->enty_data[this->enty_count] = Instance {
+		Color { 1, 1, 1 },
+		Mat4::id()
+	};
+
+	this->mesh_ids[this->enty_count] = mesh_id;
+
+	printf(
+		"Added entity %lu with mesh %lu\n",
+		this->enty_count,
+		mesh_id
+	);
+
+	return this->enty_count++;
+}
