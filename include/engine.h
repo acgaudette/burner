@@ -12,6 +12,9 @@ struct Engine
 	unsigned int objects[MAX_MESH];
 	size_t count;
 
+	int width;
+	int height;
+
 	Engine();
 
 	void init(Game&);
