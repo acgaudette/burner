@@ -191,6 +191,27 @@ int main()
 	glDeleteShader(vert);
 	glDeleteShader(frag);
 
+	/* Main loop */
+
+	while (true) {
+		if (glfwWindowShouldClose(window)) {
+			break;
+		}
+
+		// Input handling
+		glfwPollEvents();
+
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+			glfwSetWindowShouldClose(window, true);
+		}
+
+		// Rendering
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Double buffer
+		glfwSwapBuffers(window);
+	}
+
 	// Exit
 	glfwTerminate();
 	printf("Terminated.\n");
