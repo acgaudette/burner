@@ -13,6 +13,20 @@ float Vec2::mag()
 	return sqrt(this->mag_squared());
 }
 
+Vec2 Vec2::norm()
+{
+	float mag = this->mag();
+
+	if (mag == 0) {
+		return Vec2 { 0, 0 };
+	}
+
+	return Vec2 {
+		this->x / mag,
+		this->y / mag,
+	};
+}
+
 float Vec4::dot(Vec4 other)
 {
 	return    this->values[0] * other.values[0]
