@@ -254,3 +254,60 @@ void Engine::init(Game &game)
 	printf("Terminated.\n");
 	exit(0);
 }
+
+void Engine::add_mesh(Mesh *mesh)
+{
+	// Update mesh array
+	this->meshes[this->count] = mesh;
+
+	// Vertex array object
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	// Vertex buffer
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(
+		GL_ARRAY_BUFFER,
+		// FIXME: const
+		3 * mesh->vertex_count * sizeof(float),
+		mesh->vertices,
+		GL_STATIC_DRAW
+	);
+
+	// Index buffer
+	GLuint ebo;
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER,
+		mesh->index_count * sizeof(unsigned int),
+		mesh->indices,
+		GL_STATIC_DRAW
+	);
+
+	// Vertex attributes
+	glVertexAttribPointer(
+		0, // Location
+		mesh->vertex_count,
+		GL_FLOAT,
+		GL_FALSE,
+		3 * sizeof(float), // Stride
+		(void*)0 // Offset
+	);
+
+	glEnableVertexAttribArray(0);
+
+	// Update object array and count
+	this->objects[this->count] = vao;
+	this->count++;
+
+	printf(
+		"Added mesh %lu with %lu vertices and %lu indices\n",
+		this->count,
+		mesh->vertex_count,
+		mesh->index_count
+	);
+}
