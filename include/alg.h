@@ -18,6 +18,24 @@ struct Vec2
 	Vec2 norm();
 };
 
+struct Vec3
+{
+	float x;
+	float y;
+	float z;
+
+	static Vec3 normal(Vec3, Vec3, Vec3);
+
+	float mag_squared();
+	float mag();
+	Vec3 norm();
+	Vec3 cross(Vec3);
+
+	Vec3 operator+(const Vec3&);
+	Vec3 operator-(const Vec3&);
+	Vec3 operator+=(const Vec3&);
+};
+
 struct Vec4
 {
 	float values[4];
