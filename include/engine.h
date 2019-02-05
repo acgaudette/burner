@@ -1,5 +1,5 @@
-#ifndef CORE_H
-#define CORE_H
+#ifndef ENGINE_H
+#define ENGINE_H
 
 #include "game.h"
 #include "mesh.h"
