@@ -392,6 +392,18 @@ size_t Engine::add_mesh(Mesh *mesh, bool compute_normals)
 
 	glEnableVertexAttribArray(0);
 
+	// Normal
+	glVertexAttribPointer(
+		1, // Location
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		VERT_STRIDE * sizeof(float), // Stride
+		(void*)(3 * sizeof(float)) // Offset
+	);
+
+	glEnableVertexAttribArray(1);
+
 	// Update object array and count
 	this->objects[this->mesh_count] = vao;
 
