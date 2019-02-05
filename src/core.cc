@@ -192,6 +192,9 @@ void init_engine(Game &game)
 	glDeleteShader(vert);
 	glDeleteShader(frag);
 
+	// Execute game start hook
+	game.start();
+
 	/* Main loop */
 
 	while (true) {
@@ -208,6 +211,9 @@ void init_engine(Game &game)
 
 		// Rendering
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Execute game update hook
+		game.update();
 
 		// Double buffer
 		glfwSwapBuffers(window);
