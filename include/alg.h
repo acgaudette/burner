@@ -8,4 +8,11 @@ struct Color
 	float b;
 };
 
+struct Vec4
+{
+	float values[4];
+
+	float dot(Vec4);
+};
+
 #endif
