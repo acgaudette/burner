@@ -16,6 +16,9 @@ struct Vec2
 	float mag_squared();
 	float mag();
 	Vec2 norm();
+
+	Vec2 operator+(const Vec2&);
+	Vec2 operator*(const float&);
 };
 
 struct Vec3
