@@ -124,8 +124,7 @@ void resize(GLFWwindow *window, int width, int height)
 
 Engine::Engine():
 	mesh_count(0),
-	enty_count(0),
-	view(Mat4::id())
+	enty_count(0)
 {}
 
 void Engine::init(Game &game)
@@ -272,12 +271,12 @@ void Engine::init(Game &game)
 		double delta = time - last_time;
 
 		// Execute game update hook
-		game.update(input, time, delta);
+		Mat4 view = game.update(input, time, delta);
 
 		// Update view and projection matrices
 		float aspect = (float)width / height;
 		Mat4 proj = Mat4::perspective(60.0f, aspect, 0.1f, 128);
-		Mat4 proj_view = proj * this->view;
+		Mat4 proj_view = proj * view;
 
 		glUniformMatrix4fv(
 			proj_view_loc,
