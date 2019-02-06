@@ -39,6 +39,7 @@ struct Vec3
 	Vec3 operator+(const Vec3&);
 	Vec3 operator-(const Vec3&);
 	Vec3 operator+=(const Vec3&);
+	Vec3 operator*(const float&);
 };
 
 struct Vec4
