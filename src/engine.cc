@@ -332,16 +332,20 @@ size_t Engine::add_mesh(Mesh *mesh, bool compute_normals)
 {
 	// Compute normals
 	if (compute_normals) {
-		for (size_t i = 0; i < mesh->vertex_count - 2; i += 3) {
+		for (size_t i = 0; i < mesh->index_count - 2; i += 3) {
+			GLuint j = mesh->indices[i    ];
+			GLuint k = mesh->indices[i + 1];
+			GLuint l = mesh->indices[i + 2];
+
 			Vec3 normal = Vec3::normal(
-				mesh->vertices[i    ].position,
-				mesh->vertices[i + 1].position,
-				mesh->vertices[i + 2].position
+				mesh->vertices[j].position,
+				mesh->vertices[k].position,
+				mesh->vertices[l].position
 			);
 
-			mesh->vertices[i    ].normal += normal;
-			mesh->vertices[i + 1].normal += normal;
-			mesh->vertices[i + 2].normal += normal;
+			mesh->vertices[j].normal += normal;
+			mesh->vertices[k].normal += normal;
+			mesh->vertices[l].normal += normal;
 		}
 
 		for (size_t i = 0; i < mesh->vertex_count; ++i) {
