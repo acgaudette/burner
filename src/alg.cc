@@ -27,6 +27,11 @@ Vec2 Vec2::norm()
 	};
 }
 
+Vec2 Vec2::lerp(Vec2 other, float t)
+{
+	return *this * (1 - t) + other * t;
+}
+
 float Vec3::mag_squared()
 {
 	return (this->x * this->x) + (this->y * this->y) + (this->z * this->z);
@@ -59,6 +64,11 @@ Vec3 Vec3::cross(Vec3 other)
 		this->z * other.x - this->x * other.z,
 		this->x * other.y - this->y * other.x,
 	};
+}
+
+Vec3 Vec3::lerp(Vec3 other, float t)
+{
+	return *this * (1 - t) + other * t;
 }
 
 Vec3 Vec3::normal(Vec3 a, Vec3 b, Vec3 c)
