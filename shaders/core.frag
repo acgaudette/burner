@@ -1,5 +1,6 @@
 #version 400 core
 
+in  vec3 frag_pos;
 in  vec3 frag_normal;
 out vec4 out_color;
 uniform vec3 color;
