@@ -1,6 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include "stddef.h"
 #include "render.h"
 
 struct Mesh
