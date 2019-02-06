@@ -8,6 +8,10 @@ enum Key {
 	D,
 	Q,
 	E,
+	H,
+	J,
+	K,
+	L,
 	_key_count
 };
 

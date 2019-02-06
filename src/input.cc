@@ -10,6 +10,10 @@ int Input::key_to_glfw(Key key)
 	case D: return GLFW_KEY_D;
 	case Q: return GLFW_KEY_Q;
 	case E: return GLFW_KEY_E;
+	case H: return GLFW_KEY_H;
+	case J: return GLFW_KEY_J;
+	case K: return GLFW_KEY_K;
+	case L: return GLFW_KEY_L;
 	default: return -1;
 	}
 }
