@@ -32,6 +32,22 @@ Vec2 Vec2::lerp(Vec2 other, float t)
 	return *this * (1 - t) + other * t;
 }
 
+Vec2 Vec2::operator+(const Vec2 &b)
+{
+	return Vec2 {
+		this->x + b.x,
+		this->y + b.y,
+	};
+}
+
+Vec2 Vec2::operator*(const float &f)
+{
+	return Vec2 {
+		this->x * f,
+		this->y * f,
+	};
+}
+
 float Vec3::mag_squared()
 {
 	return (this->x * this->x) + (this->y * this->y) + (this->z * this->z);
@@ -101,6 +117,15 @@ Vec3 Vec3::operator+=(const Vec3 &b)
 	this->z += b.z;
 
 	return *this;
+}
+
+Vec3 Vec3::operator*(const float &f)
+{
+	return Vec3 {
+		this->x * f,
+		this->y * f,
+		this->z * f,
+	};
 }
 
 float Vec4::dot(Vec4 other)
