@@ -56,7 +56,7 @@ GLuint load_shader(const char *filename, GLenum type, char *log)
 		panic();
 	}
 
-	fread(buffer, 1, len, file);
+	size_t count = fread(buffer, 1, len, file);
 	if (ferror(file)) {
 		fprintf(stderr, "Error reading file\n");
 		panic();
@@ -88,6 +88,7 @@ GLuint load_shader(const char *filename, GLenum type, char *log)
 	}
 
 	free(buffer);
+	printf("Read %lu bytes from \"%s\"\n", count, filename);
 	return shader;
 }
 
