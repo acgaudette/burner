@@ -62,6 +62,8 @@ GLuint load_shader(const char *filename, GLenum type, char *log)
 		panic();
 	}
 
+	buffer[len - 1] = 0;
+
 	if (fclose(file)) {
 		perror("Error");
 		panic();
