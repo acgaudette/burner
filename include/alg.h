@@ -16,6 +16,7 @@ struct Vec2
 	float mag_squared();
 	float mag();
 	Vec2 norm();
+	Vec2 lerp(Vec2, float);
 
 	Vec2 operator+(const Vec2&);
 	Vec2 operator*(const float&);
@@ -33,6 +34,7 @@ struct Vec3
 	float mag();
 	Vec3 norm();
 	Vec3 cross(Vec3);
+	Vec3 lerp(Vec3, float);
 
 	Vec3 operator+(const Vec3&);
 	Vec3 operator-(const Vec3&);
