@@ -18,8 +18,6 @@ struct Engine
 	size_t mesh_ids[MAX_ENTY];
 	size_t enty_count;
 
-	Mat4 view;
-
 	Engine();
 
 	void init(Game&);
