@@ -425,11 +425,13 @@ size_t Engine::add_mesh(Mesh *mesh, bool compute_normals)
 
 size_t Engine::add_entity(size_t mesh_id)
 {
+	// Initialize default instance data
 	this->enty_data[this->enty_count] = Instance {
 		Color { 1, 1, 1 },
 		Mat4::id()
 	};
 
+	// Set mesh reference
 	this->mesh_ids[this->enty_count] = mesh_id;
 
 	printf(
@@ -438,6 +440,7 @@ size_t Engine::add_entity(size_t mesh_id)
 		mesh_id
 	);
 
+	// Update entity ID counter
 	return this->enty_count++;
 }
 
