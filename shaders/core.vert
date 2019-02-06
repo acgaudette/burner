@@ -12,6 +12,6 @@ uniform mat4 proj_view;
 void main()
 {
 	frag_pos = pos.xyz;
-	frag_normal = normal;
+	frag_normal = (model * vec4(normal, 0)).xyz;
 	gl_Position = proj_view * model * vec4(pos, 1);
 }
