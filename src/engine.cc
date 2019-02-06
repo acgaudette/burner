@@ -123,8 +123,6 @@ void resize(GLFWwindow *window, int width, int height)
 }
 
 Engine::Engine():
-	width(WIDTH),
-	height(HEIGHT),
 	mesh_count(0),
 	enty_count(0),
 	view(Mat4::id())
@@ -265,8 +263,8 @@ void Engine::init(Game &game)
 		// Recompute screen dimensions
 		GLint viewport[4];
 		glGetIntegerv(GL_VIEWPORT, viewport);
-		this->width = viewport[2];
-		this->height = viewport[3];
+		int width = viewport[2];
+		int height = viewport[3];
 
 		// Time
 		last_time = time;
@@ -277,7 +275,7 @@ void Engine::init(Game &game)
 		game.update(input, time, delta);
 
 		// Update view and projection matrices
-		float aspect = (float)this->width / this->height;
+		float aspect = (float)width / height;
 		Mat4 proj = Mat4::perspective(60.0f, aspect, 0.1f, 128);
 		Mat4 proj_view = proj * this->view;
 

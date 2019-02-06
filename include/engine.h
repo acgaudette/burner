@@ -10,9 +10,6 @@
 
 struct Engine
 {
-	int width;
-	int height;
-
 	Mesh *meshes[MAX_MESH];
 	unsigned int objects[MAX_MESH];
 	size_t mesh_count;
