@@ -6,6 +6,8 @@ struct Color
 	float r;
 	float g;
 	float b;
+
+	Color operator*(const float&);
 };
 
 struct Vec2
