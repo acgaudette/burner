@@ -35,6 +35,7 @@ struct Vec3
 	float mag_squared();
 	float mag();
 	Vec3 norm();
+	float dot(Vec3);
 	Vec3 cross(Vec3);
 	Vec3 lerp(Vec3, float);
 
