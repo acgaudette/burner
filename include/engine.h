@@ -18,6 +18,9 @@ struct Engine
 	size_t mesh_ids[MAX_ENTY];
 	size_t enty_count;
 
+	Color clear_color = Color { 0.3f, 0.2f, 0.1f };
+	float fov = 60.0f;
+
 	Engine();
 
 	void init(Game&);
