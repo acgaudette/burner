@@ -123,7 +123,7 @@ void resize(GLFWwindow *window, int width, int height)
 
 Engine::Engine():
 	mesh_count(0),
-	enty_count(0)
+	ent_count(0)
 {}
 
 void Engine::init(Game &game)
@@ -291,12 +291,12 @@ void Engine::init(Game &game)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Render all entities
-		for (size_t i = 0; i < this->enty_count; ++i) {
+		for (size_t i = 0; i < this->ent_count; ++i) {
 			size_t mesh_id = this->mesh_ids[i];
 			Mesh *mesh = this->meshes[mesh_id];
 			glBindVertexArray(this->objects[mesh_id]);
 
-			Instance instance = this->enty_data[i];
+			Instance instance = this->ent_data[i];
 
 			glUniform3f(
 				color_loc,
@@ -424,28 +424,28 @@ size_t Engine::add_mesh(Mesh *mesh, bool compute_normals)
 	return this->mesh_count++;
 }
 
-size_t Engine::add_entity(size_t mesh_id)
+size_t Engine::add_ent(size_t mesh_id)
 {
 	// Initialize default instance data
-	this->enty_data[this->enty_count] = Instance {
+	this->ent_data[this->ent_count] = Instance {
 		Color { 1, 1, 1 },
 		Mat4::id()
 	};
 
 	// Set mesh reference
-	this->mesh_ids[this->enty_count] = mesh_id;
+	this->mesh_ids[this->ent_count] = mesh_id;
 
 	printf(
 		"Added entity %lu with mesh %lu\n",
-		this->enty_count,
+		this->ent_count,
 		mesh_id
 	);
 
 	// Update entity ID counter
-	return this->enty_count++;
+	return this->ent_count++;
 }
 
 void Engine::update_entity(size_t id, Instance data)
 {
-	this->enty_data[id] = data;
+	this->ent_data[id] = data;
 }
