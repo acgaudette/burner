@@ -6,6 +6,8 @@ struct Color
 	float r;
 	float g;
 	float b;
+
+	Color operator*(const float&);
 };
 
 struct Vec2
@@ -33,6 +35,7 @@ struct Vec3
 	float mag_squared();
 	float mag();
 	Vec3 norm();
+	float dot(Vec3);
 	Vec3 cross(Vec3);
 	Vec3 lerp(Vec3, float);
 
@@ -58,6 +61,7 @@ struct Mat4
 
 	static Mat4 id();
 	static Mat4 translation(float, float, float);
+	static Mat4 translation(Vec3);
 	static Mat4 rotation_x(float);
 	static Mat4 rotation_y(float);
 	static Mat4 rotation_z(float);

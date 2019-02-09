@@ -14,16 +14,19 @@ struct Engine
 	unsigned int objects[MAX_MESH];
 	size_t mesh_count;
 
-	Instance enty_data[MAX_ENTY];
+	Instance ent_data[MAX_ENTY];
 	size_t mesh_ids[MAX_ENTY];
-	size_t enty_count;
+	size_t ent_count;
+
+	Color clear_color = Color { 0.3f, 0.2f, 0.1f };
+	float fov = 60.0f;
 
 	Engine();
 
 	void init(Game&);
 	size_t add_mesh(Mesh*, bool compute_normals = true);
-	size_t add_entity(size_t);
-	void update_entity(size_t, Instance);
+	ent add_ent(size_t);
+	void update_entity(ent, Instance);
 };
 
 #endif

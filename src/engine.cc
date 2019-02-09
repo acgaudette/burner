@@ -8,7 +8,6 @@
 #define WIDTH  1280
 #define HEIGHT 720
 #define TITLE "burner"
-#define CLEAR 0.2f, 0.1f, 0.1f
 #define MAJOR 4
 #define MINOR 0
 #define LOG_BUF 1024
@@ -124,7 +123,7 @@ void resize(GLFWwindow *window, int width, int height)
 
 Engine::Engine():
 	mesh_count(0),
-	enty_count(0)
+	ent_count(0)
 {}
 
 void Engine::init(Game &game)
@@ -139,6 +138,10 @@ void Engine::init(Game &game)
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, MAJOR);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, MINOR);
+
+	#if defined(__APPLE__)
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	#endif
 
 	// Use core profile only
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -182,14 +185,30 @@ void Engine::init(Game &game)
 		panic();
 	}
 
+	#if !defined(__APPLE__)
 	// OpenGL debugging
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_error, 0);
+	#endif
 
 	// Create rendering viewport
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(CLEAR, 1.0f);
+
+	#if defined(__APPLE__)
+	{
+		// GLFW's cocoa back-end does not
+		// seem to initialize the window correctly
+		// for high dpi (MacOS retina),
+		// changing the window position and then re-setting it
+		// is a work-around
+		int xpos = 0;
+		int ypos = 0;
+		glfwGetWindowPos(window, &xpos, &ypos);
+		glfwSetWindowPos(window, 0, 0);
+		glfwSetWindowPos(window, xpos, ypos);
+	}
+	#endif
 
 	/* Shaders */
 
@@ -247,10 +266,6 @@ void Engine::init(Game &game)
 		// Input handling
 		glfwPollEvents();
 
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, true);
-		}
-
 		for (int i = 0; i < Key::_key_count; ++i) {
 			input.keys[i].last = input.keys[i].curr;
 			input.keys[i].curr = glfwGetKey(
@@ -275,7 +290,7 @@ void Engine::init(Game &game)
 
 		// Update view and projection matrices
 		float aspect = (float)width / height;
-		Mat4 proj = Mat4::perspective(60.0f, aspect, 0.1f, 128);
+		Mat4 proj = Mat4::perspective(this->fov, aspect, 0.1f, 128);
 		Mat4 proj_view = proj * view;
 
 		glUniformMatrix4fv(
@@ -287,15 +302,22 @@ void Engine::init(Game &game)
 
 		/* Rendering */
 
+		glClearColor(
+			this->clear_color.r,
+			this->clear_color.g,
+			this->clear_color.b,
+			1.0f
+		);
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Render all entities
-		for (size_t i = 0; i < this->enty_count; ++i) {
+		for (size_t i = 0; i < this->ent_count; ++i) {
 			size_t mesh_id = this->mesh_ids[i];
 			Mesh *mesh = this->meshes[mesh_id];
 			glBindVertexArray(this->objects[mesh_id]);
 
-			Instance instance = this->enty_data[i];
+			Instance instance = this->ent_data[i];
 
 			glUniform3f(
 				color_loc,
@@ -423,28 +445,28 @@ size_t Engine::add_mesh(Mesh *mesh, bool compute_normals)
 	return this->mesh_count++;
 }
 
-size_t Engine::add_entity(size_t mesh_id)
+size_t Engine::add_ent(size_t mesh_id)
 {
 	// Initialize default instance data
-	this->enty_data[this->enty_count] = Instance {
+	this->ent_data[this->ent_count] = Instance {
 		Color { 1, 1, 1 },
 		Mat4::id()
 	};
 
 	// Set mesh reference
-	this->mesh_ids[this->enty_count] = mesh_id;
+	this->mesh_ids[this->ent_count] = mesh_id;
 
 	printf(
 		"Added entity %lu with mesh %lu\n",
-		this->enty_count,
+		this->ent_count,
 		mesh_id
 	);
 
 	// Update entity ID counter
-	return this->enty_count++;
+	return this->ent_count++;
 }
 
 void Engine::update_entity(size_t id, Instance data)
 {
-	this->enty_data[id] = data;
+	this->ent_data[id] = data;
 }

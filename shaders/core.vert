@@ -13,5 +13,6 @@ void main()
 {
 	frag_pos = pos.xyz;
 	frag_normal = (model * vec4(normal, 0)).xyz;
+	frag_normal = normalize(frag_normal);
 	gl_Position = proj_view * model * vec4(pos, 1);
 }

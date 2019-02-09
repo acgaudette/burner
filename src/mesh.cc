@@ -21,10 +21,14 @@ index_count(index_count)
 {
 	for (size_t i = 0; i < vertex_count; ++i) {
 		vertices[i] = Vertex {
-			positions[3 * i    ],
-			positions[3 * i + 1],
-			positions[3 * i + 2],
-			0, 0, 0
+			{
+				positions[3 * i    ],
+				positions[3 * i + 1],
+				positions[3 * i + 2],
+			},
+			{
+				0, 0, 0
+			}
 		};
 	}
 }
@@ -44,12 +48,16 @@ index_count(index_count)
 {
 	for (size_t i = 0; i < vertex_count; ++i) {
 		vertices[i] = Vertex {
-			positions[3 * i    ],
-			positions[3 * i + 1],
-			positions[3 * i + 2],
-			normals[3 * i    ],
-			normals[3 * i + 1],
-			normals[3 * i + 2],
+			{
+				positions[3 * i    ],
+				positions[3 * i + 1],
+				positions[3 * i + 2],
+			},
+			{
+				normals[3 * i    ],
+				normals[3 * i + 1],
+				normals[3 * i + 2],
+			}
 		};
 	}
 }
