@@ -185,6 +185,11 @@ Mat4 Mat4::translation(float x, float y, float z)
 	return Mat4(values);
 }
 
+Mat4 Mat4::translation(Vec3 v)
+{
+	return translation(v.x, v.y, v.z);
+}
+
 Mat4 Mat4::rotation_x(float rad)
 {
 	float values[] = {

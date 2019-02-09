@@ -61,6 +61,7 @@ struct Mat4
 
 	static Mat4 id();
 	static Mat4 translation(float, float, float);
+	static Mat4 translation(Vec3);
 	static Mat4 rotation_x(float);
 	static Mat4 rotation_y(float);
 	static Mat4 rotation_z(float);
