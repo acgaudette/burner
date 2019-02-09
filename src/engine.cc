@@ -245,10 +245,6 @@ void Engine::init(Game &game)
 		// Input handling
 		glfwPollEvents();
 
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, true);
-		}
-
 		for (int i = 0; i < Key::_key_count; ++i) {
 			input.keys[i].last = input.keys[i].curr;
 			input.keys[i].curr = glfwGetKey(
