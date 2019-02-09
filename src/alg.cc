@@ -3,6 +3,15 @@
 
 #define PI 3.14159265
 
+Color Color::operator*(const float &f)
+{
+	return Color {
+		this->r * f,
+		this->g * f,
+		this->b * f,
+	};
+}
+
 float Vec2::mag_squared()
 {
 	return (this->x * this->x) + (this->y * this->y);
@@ -71,6 +80,11 @@ Vec3 Vec3::norm()
 		this->y / mag,
 		this->z / mag,
 	};
+}
+
+float Vec3::dot(Vec3 other)
+{
+	return this->x * other.x + this->y * other.y + this->z * other.z;
 }
 
 Vec3 Vec3::cross(Vec3 other)
