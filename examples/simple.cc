@@ -16,7 +16,7 @@ struct Jam: Game
 void Jam::start()
 {
 	size_t tetra = engine.add_mesh(&mesh);
-	obj = engine.add_entity(tetra);
+	obj = engine.add_ent(tetra);
 }
 
 Mat4 Jam::update(Input input, double time, double delta)
