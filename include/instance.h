@@ -3,6 +3,8 @@
 
 #include "alg.h"
 
+typedef size_t ent;
+
 struct Instance
 {
 	Color color;
