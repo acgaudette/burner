@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+mkdir -p lib; cd lib
+git clone https://github.com/glfw/glfw.git
+git clone https://github.com/skaslev/gl3w.git
+
+pushd .
+cd gl3w; ./*.py
+popd
+
+cd glfw; cmake .
+make
