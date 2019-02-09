@@ -139,6 +139,10 @@ void Engine::init(Game &game)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, MAJOR);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, MINOR);
 
+	#if defined(__APPLE__)
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	#endif
+
 	// Use core profile only
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -181,13 +185,30 @@ void Engine::init(Game &game)
 		panic();
 	}
 
+	#if !defined(__APPLE__)
 	// OpenGL debugging
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_error, 0);
+	#endif
 
 	// Create rendering viewport
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glEnable(GL_DEPTH_TEST);
+
+	#if defined(__APPLE__)
+	{
+		// GLFW's cocoa back-end does not
+		// seem to initialize the window correctly
+		// for high dpi (MacOS retina),
+		// changing the window position and then re-setting it
+		// is a work-around
+		int xpos = 0;
+		int ypos = 0;
+		glfwGetWindowPos(window, &xpos, &ypos);
+		glfwSetWindowPos(window, 0, 0);
+		glfwSetWindowPos(window, xpos, ypos);
+	}
+	#endif
 
 	/* Shaders */
 

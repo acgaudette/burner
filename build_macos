@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+mkdir -p out
+
+g++ -fPIC src/*.cc -Wall -O0 \
+-I include \
+-I lib/gl3w/include \
+lib/gl3w/src/gl3w.c \
+-I lib/glfw/include \
+-L lib/glfw/src \
+-lglfw \
+-framework OpenGL \
+-lpthread -ldl -lm \
+-shared -o out/libburner.so
