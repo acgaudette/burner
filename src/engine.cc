@@ -8,7 +8,6 @@
 #define WIDTH  1280
 #define HEIGHT 720
 #define TITLE "burner"
-#define CLEAR 0.2f, 0.1f, 0.1f
 #define MAJOR 4
 #define MINOR 0
 #define LOG_BUF 1024
@@ -189,7 +188,6 @@ void Engine::init(Game &game)
 	// Create rendering viewport
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(CLEAR, 1.0f);
 
 	/* Shaders */
 
@@ -275,7 +273,7 @@ void Engine::init(Game &game)
 
 		// Update view and projection matrices
 		float aspect = (float)width / height;
-		Mat4 proj = Mat4::perspective(60.0f, aspect, 0.1f, 128);
+		Mat4 proj = Mat4::perspective(this->fov, aspect, 0.1f, 128);
 		Mat4 proj_view = proj * view;
 
 		glUniformMatrix4fv(
@@ -286,6 +284,13 @@ void Engine::init(Game &game)
 		);
 
 		/* Rendering */
+
+		glClearColor(
+			this->clear_color.r,
+			this->clear_color.g,
+			this->clear_color.b,
+			1.0f
+		);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
