@@ -8,11 +8,13 @@ enum Key {
 	D,
 	Q,
 	E,
+	R,
 	H,
 	J,
 	K,
 	L,
-	_key_count
+	SPACE,
+	_key_count,
 };
 
 /* Thin wrapper around window library.
