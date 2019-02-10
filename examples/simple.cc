@@ -1,36 +1,13 @@
-#include "engine.h"
-#include "math.h"
+#include "game.h"
+#include <math.h>
 
-typedef size_t enty;
-
-Engine engine;
 Mesh mesh;
-enty obj;
+ent obj;
 
-struct Jam: Game
+void start(Engine *engine)
 {
-	void start();
-	Mat4 update(Input, double, double);
-};
+	load_gl_functions();
 
-void Jam::start()
-{
-	size_t tetra = engine.add_mesh(&mesh);
-	obj = engine.add_ent(tetra);
-}
-
-Mat4 Jam::update(Input input, double time, double delta)
-{
-	Instance instance;
-	instance.color = Color { 1, 0.5f, 0.3f };
-	instance.model = Mat4::translation(0, -0.25f, 1.5f)
-		* Mat4::rotation_y(time);
-	engine.update_entity(obj, instance);
-	return Mat4::id();
-}
-
-int main()
-{
 	float alt = sqrt(3) * 0.5f;
 	float apo = alt / 3;
 	float rad = alt - apo;
@@ -61,6 +38,17 @@ int main()
 	Vertex vert[7];
 	mesh = Mesh(vert, 7, pos, ind, 12);
 
-	Jam jam;
-	engine.init(jam);
+	size_t tetra = engine->add_mesh(&mesh);
+	obj = engine->add_ent(tetra);
+}
+
+Mat4 update(Engine *engine, Input input, double time, double delta)
+{
+	Instance instance;
+	instance.color = Color { 1, 0.5f, 0.3f };
+	instance.model = Mat4::translation(0, -0.25f, 1.5f)
+		* Mat4::rotation_y(time);
+	engine->update_entity(obj, instance);
+
+	return Mat4::id();
 }
