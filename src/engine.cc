@@ -5,6 +5,9 @@
 #include <GLFW/glfw3.h> // OpenGL included
 #include "game.h"
 
+// Linux headers
+#include <dlfcn.h>
+
 #define WIDTH  1280
 #define HEIGHT 720
 #define TITLE "burner"
@@ -255,6 +258,38 @@ void Engine::init()
 	glDeleteShader(vert);
 	glDeleteShader(frag);
 
+	/* Load game function pointers */
+
+	void *lib = dlopen("./out/libjam.so", RTLD_NOW | RTLD_LOCAL);
+
+	if (!lib) {
+		char *err = dlerror();
+		fprintf(stderr, "Error loading game library: %s\n", err);
+		panic();
+	}
+
+	game_start_loader *start_loader
+		= (game_start_loader*)dlsym(lib, "get_start");
+
+	if (!start_loader) {
+		char *err = dlerror();
+		fprintf(stderr, "Error loading start function: %s\n", err);
+		panic();
+	}
+
+	game_start *start = (*start_loader)();
+
+	game_update_loader *update_loader
+		= (game_update_loader*)dlsym(lib, "get_update");
+
+	if (!update_loader) {
+		char *err = dlerror();
+		fprintf(stderr, "Error loading update function: %s\n", err);
+		panic();
+	}
+
+	game_update *update = (*update_loader)();
+
 	// Execute game start hook
 	game.start();
 	Input input;
@@ -350,7 +385,11 @@ void Engine::init()
 		glfwSwapBuffers(window); // Double buffer
 	}
 
-	// Exit
+	/* Exit */
+
+	// Linux
+	dlclose(lib);
+
 	glfwTerminate();
 	printf("Terminated.\n");
 	exit(0);
