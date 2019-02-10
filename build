@@ -8,14 +8,16 @@ DEP="
 
 mkdir -p out
 
-g++ -fPIC src/*.cc -Wall -O0 \
+# Build host process
+g++ -Wall -O0 \
+src/*.cc \
 -I include \
--I lib/gl3w/include \
-lib/gl3w/src/gl3w.c \
--I lib/glfw/include \
--L lib/glfw/src \
--lglfw3 \
--lGL \
--lX11 \
--lpthread -ldl -lm \
+$DEP \
+-o out/burner
+
+# Build dynamic library
+g++ -fPIC -Wall -O0 \
+src/*.cc \
+-I include \
+$DEP \
 -shared -o out/libburner.so
