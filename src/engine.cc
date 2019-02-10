@@ -291,7 +291,7 @@ void Engine::init()
 	game_update *update = (*update_loader)();
 
 	// Execute game start hook
-	game.start();
+	(*start)(this);
 	Input input;
 
 	/* Main loop */
@@ -327,7 +327,7 @@ void Engine::init()
 		double delta = time - last_time;
 
 		// Execute game update hook
-		Mat4 view = game.update(input, time, delta);
+		Mat4 view = (*update)(this, input, time, delta);
 
 		// Update view and projection matrices
 		float aspect = (float)width / height;
