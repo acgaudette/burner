@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
-if g++ examples/simple.cc \
--I include -L out -lburner \
--o /tmp/simple
-then /tmp/simple; fi
+
+if g++ -fPIC examples/simple.cc -Wall -O0 \
+-I include \
+-L out -lburner \
+-shared -o out/libjam.so
+then out/burner; fi
