@@ -52,3 +52,19 @@ Mat4 update(Engine *engine, Input input, double time, double delta)
 
 	return Mat4::id();
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+	game_start *get_start()
+	{
+		return (game_start*)(&start);
+	}
+
+	game_update *get_update()
+	{
+		return (game_update*)(&update);
+	}
+#ifdef __cplusplus
+}
+#endif
