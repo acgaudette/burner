@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+DEP="
+-I lib/gl3w/include lib/gl3w/src/gl3w.c \
+-I lib/glfw/include -L lib/glfw/src -lglfw3 \
+-lGL -lX11 -lpthread -ldl -lm
+"
+
 mkdir -p out
 
 g++ -fPIC src/*.cc -Wall -O0 \
