@@ -160,9 +160,9 @@ void Engine::init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, MAJOR);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, MINOR);
 
-	#if defined(__APPLE__)
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	#endif
+#if defined(__APPLE__)
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 	// Use core profile only
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -191,17 +191,17 @@ void Engine::init()
 	// Load OpenGL function pointers
 	load_gl_functions();
 
-	#if !defined(__APPLE__)
+#if !defined(__APPLE__)
 	// OpenGL debugging
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_error, 0);
-	#endif
+#endif
 
 	// Create rendering viewport
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glEnable(GL_DEPTH_TEST);
 
-	#if defined(__APPLE__)
+#if defined(__APPLE__)
 	{
 		// GLFW's cocoa back-end does not
 		// seem to initialize the window correctly
@@ -214,7 +214,7 @@ void Engine::init()
 		glfwSetWindowPos(window, 0, 0);
 		glfwSetWindowPos(window, xpos, ypos);
 	}
-	#endif
+#endif
 
 	/* Shaders */
 
