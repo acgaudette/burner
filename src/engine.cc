@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <GL/gl3w.h> // Runtime function loader (core only)
 #include <GLFW/glfw3.h> // OpenGL included
-#include "engine.h"
+#include "game.h"
 
 #define WIDTH  1280
 #define HEIGHT 720
@@ -17,6 +17,27 @@ void panic()
 	glfwTerminate();
 	printf("Terminated unexpectedly.\n");
 	exit(1);
+}
+
+void load_gl_functions()
+{
+	// Load functions at runtime
+	if (gl3wInit()) {
+		fprintf(stderr, "Failed to initialize loader\n");
+		panic();
+	}
+
+	// Check for compatability
+	if (!gl3wIsSupported(MAJOR, MINOR)) {
+		fprintf(
+			stderr,
+			"OpenGL %d.%d is not supported\n",
+			MAJOR,
+			MINOR
+		);
+
+		panic();
+	}
 }
 
 GLuint load_shader(const char *filename, GLenum type, char *log)
@@ -167,23 +188,8 @@ void Engine::init()
 	// Make OpenGL context
 	glfwMakeContextCurrent(window);
 
-	// Load functions at runtime
-	if (gl3wInit()) {
-		fprintf(stderr, "Failed to initialize loader\n");
-		panic();
-	}
-
-	// Check for compatability
-	if (!gl3wIsSupported(MAJOR, MINOR)) {
-		fprintf(
-			stderr,
-			"OpenGL %d.%d is not supported\n",
-			MAJOR,
-			MINOR
-		);
-
-		panic();
-	}
+	// Load OpenGL function pointers
+	load_gl_functions();
 
 	#if !defined(__APPLE__)
 	// OpenGL debugging

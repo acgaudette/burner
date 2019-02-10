@@ -1,12 +1,13 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "game.h"
 #include "mesh.h"
 #include "instance.h"
 
 #define MAX_MESH 64
 #define MAX_ENTY 1024
+
+void load_gl_functions();
 
 struct Engine
 {
