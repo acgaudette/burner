@@ -23,7 +23,7 @@ struct Engine
 
 	Engine();
 
-	void init(Game&);
+	void init();
 	size_t add_mesh(Mesh*, bool compute_normals = true);
 	ent add_ent(size_t);
 	void update_entity(ent, Instance);

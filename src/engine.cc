@@ -126,7 +126,7 @@ Engine::Engine():
 	ent_count(0)
 {}
 
-void Engine::init(Game &game)
+void Engine::init()
 {
 	// Window debugging
 	glfwSetErrorCallback(window_error);
