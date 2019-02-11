@@ -6,18 +6,18 @@ DEP="
 -lGL -lX11 -lpthread -ldl -lm
 "
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
 mkdir -p out
-
-# Build host process
-g++ -Wall -O0 \
-src/*.cc \
--I include \
-$DEP \
--o out/burner
 
 # Build dynamic library
 g++ -fPIC -Wall -O0 \
-src/*.cc \
--I include \
+src/*.cc -I include \
 $DEP \
 -shared -o out/libburner.so
+
+# Build host process
+g++ -Wall -O0 \
+src/host/*.cc -I include \
+-L out -lburner \
+$DEP \
+-o out/burner
