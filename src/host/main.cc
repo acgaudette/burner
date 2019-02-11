@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GLFW/glfw3.h>
-#include "game.h"
+#include "burner.h"
 
 // Linux headers
 #include <dlfcn.h>

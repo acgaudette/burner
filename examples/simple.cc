@@ -1,5 +1,5 @@
 #include <math.h>
-#include "game.h"
+#include "burner.h"
 
 Mesh mesh;
 ent obj;
