@@ -7,6 +7,13 @@
 
 #define LOG_BUF 1024
 
+void panic()
+{
+	glfwTerminate();
+	printf("Terminated unexpectedly.\n");
+	exit(1);
+}
+
 void load_gl_functions()
 {
 	// Load functions at runtime
