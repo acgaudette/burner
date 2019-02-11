@@ -6,9 +6,4 @@
 
 void panic();
 
-struct Engine
-{
-	void init();
-};
-
 #endif
