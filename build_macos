@@ -1,14 +1,24 @@
 #!/usr/bin/env bash
 
+DEP="
+-I lib/gl3w/include lib/gl3w/src/gl3w.c \
+-I lib/glfw/include -L lib/glfw/src -lglfw3 \
+-framework Cocoa -framework IOKit -framework CoreVideo \
+-framework OpenGL -lpthread -ldl -lm
+"
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
 mkdir -p out
 
-g++ -fPIC src/*.cc -Wall -O0 \
--I include \
--I lib/gl3w/include \
-lib/gl3w/src/gl3w.c \
--I lib/glfw/include \
--L lib/glfw/src \
--lglfw \
--framework OpenGL \
--lpthread -ldl -lm \
+# Build dynamic library
+g++ -fPIC -Wall -O0 \
+src/*.cc -I include \
+$DEP \
 -shared -o out/libburner.so
+
+# Build host process
+g++ -Wall -O0 \
+src/host/*.cc -I include \
+-L out -lburner \
+$DEP \
+-o out/burner
