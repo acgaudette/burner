@@ -1,6 +1,7 @@
 #ifndef INSTANCE_H
 #define INSTANCE_H
 
+#include <stddef.h>
 #include "alg.h"
 
 typedef size_t ent;
