@@ -2,7 +2,8 @@
 
 DEP="
 -I lib/gl3w/include lib/gl3w/src/gl3w.c \
--I lib/glfw/include -L lib/glfw/src -framework Cocoa -framework IOKit -framework CoreVideo -lglfw3 \
+-I lib/glfw/include -L lib/glfw/src -lglfw3 \
+-framework Cocoa -framework IOKit -framework CoreVideo \
 -framework OpenGL -lpthread -ldl -lm
 "
 
