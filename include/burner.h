@@ -1,8 +1,6 @@
 #ifndef BURNER_H
 #define BURNER_H
 
-#include "alg.h"
-#include "state.h"
 #include "render.h"
 #include "input.h"
 

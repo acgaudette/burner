@@ -1,9 +1,8 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "alg.h"
-#include "mesh.h"
 #include "state.h"
+#include "mesh.h"
 
 #define WIDTH  1280
 #define HEIGHT 720
