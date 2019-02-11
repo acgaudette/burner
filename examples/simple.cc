@@ -1,13 +1,11 @@
-#include "game.h"
 #include <math.h>
+#include "game.h"
 
 Mesh mesh;
 ent obj;
 
-void start(Engine *engine)
+void start(State *state, Renderer *renderer)
 {
-	load_gl_functions();
-
 	float alt = sqrt(3) * 0.5f;
 	float apo = alt / 3;
 	float rad = alt - apo;
@@ -38,17 +36,22 @@ void start(Engine *engine)
 	Vertex vert[7];
 	mesh = Mesh(vert, 7, pos, ind, 12);
 
-	size_t tetra = engine->add_mesh(&mesh);
-	obj = engine->add_ent(tetra);
+	size_t tetra = renderer->add_mesh(&mesh);
+	obj = state->add_ent(tetra);
 }
 
-Mat4 update(Engine *engine, Input input, double time, double delta)
-{
+Mat4 update(
+	State *state,
+	Renderer *renderer,
+	Input input,
+	double time,
+	double delta
+) {
 	Instance instance;
 	instance.color = Color { 1, 0.5f, 0.3f };
 	instance.model = Mat4::translation(0, -0.25f, 1.5f)
 		* Mat4::rotation_y(time);
-	engine->update_entity(obj, instance);
+	state->update_ent(obj, instance);
 
 	return Mat4::id();
 }
