@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GLFW/glfw3.h>
-#include "engine.h"
 #include "game.h"
-#include "render.h"
 
 // Linux headers
 #include <dlfcn.h>

@@ -4,7 +4,6 @@
 #include <GL/gl3w.h> // Runtime function loader (core only)
 #include <GLFW/glfw3.h> // OpenGL included
 #include "render.h"
-#include "engine.h"
 
 #define LOG_BUF 1024
 

@@ -5,9 +5,13 @@
 #include "mesh.h"
 #include "state.h"
 
-#define MAX_MESH 64
+#define WIDTH  1280
+#define HEIGHT 720
 #define MAJOR 4
 #define MINOR 0
+#define MAX_MESH 64
+
+void panic();
 
 struct Renderer
 {
