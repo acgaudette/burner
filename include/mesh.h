@@ -1,8 +1,16 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "stddef.h"
-#include "render.h"
+#define VERT_STRIDE 6
+
+#include <stddef.h>
+#include "alg.h"
+
+struct Vertex
+{
+	Vec3 position;
+	Vec3 normal;
+};
 
 struct Mesh
 {
