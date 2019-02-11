@@ -116,7 +116,7 @@ int main()
 		double delta = time - last_time;
 
 		// Execute game update hook
-		Mat4 view = (*update)(&state, &renderer, input, time, delta);
+		Mat4 view = (*update)(&state, &renderer, &input, time, delta);
 
 		// Render
 		renderer.render(view, &state);

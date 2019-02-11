@@ -43,7 +43,7 @@ void start(State *state, Renderer *renderer)
 Mat4 update(
 	State *state,
 	Renderer *renderer,
-	Input input,
+	Input *input,
 	double time,
 	double delta
 ) {
