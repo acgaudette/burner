@@ -1,9 +1,17 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "instance.h"
+#include "alg.h"
 
 #define MAX_ENTY 1024
+
+typedef size_t ent;
+
+struct Instance
+{
+	Color color;
+	Mat4 model;
+};
 
 struct State
 {
