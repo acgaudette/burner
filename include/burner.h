@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef BURNER_H
+#define BURNER_H
 
 #include "alg.h"
 #include "state.h"
