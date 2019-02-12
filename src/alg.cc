@@ -195,7 +195,7 @@ Mat4 Mat4::rotation_x(float rad)
 	float values[] = {
 		 1,        0,         0, 0,
 		 0, cos(rad), -sin(rad), 0,
-		 0, sin(rad),  cos(rad), 1,
+		 0, sin(rad),  cos(rad), 0,
 		 0,        0,         0, 1,
 	};
 
@@ -219,7 +219,7 @@ Mat4 Mat4::rotation_z(float rad)
 	float values[] = {
 		 cos(rad), sin(rad), 0, 0,
 		-sin(rad), cos(rad), 0, 0,
-		        0,        0, 1, 1,
+		        0,        0, 1, 0,
 		        0,        0, 0, 1,
 	};
 
