@@ -15,6 +15,11 @@ int Input::key_to_glfw(Key key)
 	case J: return GLFW_KEY_J;
 	case K: return GLFW_KEY_K;
 	case L: return GLFW_KEY_L;
+	case L_BRACK: return GLFW_KEY_LEFT_BRACKET;
+	case R_BRACK: return GLFW_KEY_RIGHT_BRACKET;
+	case MINUS: return GLFW_KEY_MINUS;
+	case EQUAL: return GLFW_KEY_EQUAL;
+	case BACKSLASH: return GLFW_KEY_BACKSLASH;
 	case SPACE: return GLFW_KEY_SPACE;
 	default: return -1;
 	}

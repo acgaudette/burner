@@ -13,6 +13,11 @@ enum Key {
 	J,
 	K,
 	L,
+	L_BRACK,
+	R_BRACK,
+	MINUS,
+	EQUAL,
+	BACKSLASH,
 	SPACE,
 	_key_count,
 };
