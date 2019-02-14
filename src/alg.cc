@@ -12,6 +12,24 @@ Color Color::operator*(const float &f)
 	};
 }
 
+Color Color::operator+(const Color &b)
+{
+	return Color {
+		this->r + b.r,
+		this->g + b.g,
+		this->b + b.b,
+	};
+}
+
+Color Color::operator*(const Color &b)
+{
+	return Color {
+		this->r * b.r,
+		this->g * b.g,
+		this->b * b.b,
+	};
+}
+
 float Vec2::mag_squared()
 {
 	return (this->x * this->x) + (this->y * this->y);
