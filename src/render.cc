@@ -220,7 +220,7 @@ void Renderer::render(Mat4 view, State *state)
 
 	// Update view and projection matrices
 	float aspect = (float)width / height;
-	Mat4 proj = Mat4::perspective(this->fov, aspect, 0.1f, 128);
+	Mat4 proj = Mat4::perspective(this->fov, aspect, 0.1f, 1024);
 	Mat4 proj_view = proj * view;
 
 	glUniformMatrix4fv(
