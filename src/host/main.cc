@@ -5,6 +5,11 @@
 
 // Linux headers
 #include <dlfcn.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <string.h>
 
 #define TITLE "burner"
 
@@ -13,9 +18,31 @@ void window_error(int error, const char *message)
 	fprintf(stderr, "Window error: %s\n", message);
 }
 
-int main()
+struct GameLibrary {
+	void *lib;
+	game_start *start;
+	game_update *update;
+
+	time_t prev_load_time;
+};
+
+bool load_game(GameLibrary *game)
+{
+	return false;
+}
+bool unload_game(GameLibrary *game)
+{
+	return false;
+}
+
+
+int Engine_init(void* custom_data)
 {
 	/* Load game function pointers */
+
+	GameLibrary game;
+
+	void* user_data = custom_data;
 
 	void *lib = dlopen("./out/libjam.so", RTLD_NOW | RTLD_LOCAL);
 
@@ -46,6 +73,17 @@ int main()
 	}
 
 	game_update *update = (*update_loader)();
+
+	game.lib    = lib;
+	game.start  = start;
+	game.update = update;
+
+	struct stat file_info;
+	if (stat("./out/libjam.so", &file_info)) {
+		fprintf(stderr, "Error getting library modification time: %s\n", strerror(errno));
+		panic();
+	}
+	game.prev_load_time = file_info.st_mtime;
 
 	/* Create window */
 
@@ -88,7 +126,7 @@ int main()
 	Input input;
 
 	// Execute game start hook
-	(*start)(&state, &renderer);
+	(*game.start)(&state, &renderer, &user_data);
 
 	/* Main loop */
 
@@ -116,7 +154,7 @@ int main()
 		double delta = time - last_time;
 
 		// Execute game update hook
-		Mat4 view = (*update)(&state, &renderer, &input, time, delta);
+		Mat4 view = (*game.update)(&state, &renderer, &input, time, delta, user_data);
 
 		// Render
 		renderer.render(view, &state);
@@ -127,9 +165,9 @@ int main()
 	/* Exit */
 
 	// Linux
-	dlclose(lib);
+	dlclose(game.lib);
 
 	glfwTerminate();
 	printf("Terminated.\n");
-	exit(0);
+	return EXIT_SUCCESS;	
 }

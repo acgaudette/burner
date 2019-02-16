@@ -18,7 +18,7 @@ $DEP \
 
 # Build host process
 g++ -Wall -O0 \
-src/host/*.cc -I include \
+examples/simple_main.cc src/host/*.cc -I include \
 -L out -lburner \
 $DEP \
 -o out/burner

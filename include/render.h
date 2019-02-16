@@ -28,6 +28,7 @@ struct Renderer
 	void init(void*);
 	void render(Mat4, State*);
 	size_t add_mesh(Mesh*, bool compute_normals = true);
+	size_t add_mesh(bool compute_normals = true);
 };
 
 #endif
