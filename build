@@ -6,7 +6,6 @@ DEP="
 -lGL -lX11 -lpthread -ldl -lm
 "
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
 mkdir -p out
 
 # Build dynamic library
