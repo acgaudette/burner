@@ -17,6 +17,6 @@ $DEP \
 # Build host process
 g++ -Wall -O0 \
 src/host/*.cc -I include \
--L out -lburner \
+-Wl,-rpath out -L out -lburner \
 $DEP \
 -o out/burner
