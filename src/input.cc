@@ -17,6 +17,9 @@ int Input::key_to_glfw(Key key)
 	case L: return GLFW_KEY_L;
 	case SPACE: return GLFW_KEY_SPACE;
 	case GRAVE_ACCENT: return GLFW_KEY_GRAVE_ACCENT;
+	case PERIOD: return GLFW_KEY_PERIOD;
+	case SLASH: return GLFW_KEY_SLASH;
+	case NUM1: return GLFW_KEY_1;
 	default: return -1;
 	}
 }

@@ -12,7 +12,7 @@ else
     echo "loading '$1' to build '$2'";
 fi
 
-g++ -fPIC $1 -Wall -O0 \
+g++ -fPIC $1 -Wall -O0 -DDEVELOPMENT_MODE -DGAME_CODE \
 -I include \
 -L out -lburner \
 -shared -o $2

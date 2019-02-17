@@ -1,11 +1,4 @@
 #include "simple_common.h"
-#define PASTE2(x, y) x##y
-#define PASTE(x, y) PASTE2(x, y)
-#include "../out/version.h"
-#define VERSIONED_PROC(name) PASTE(name, LIB_VERSION)
-// TODO move the above boilerplate elsewhere
-
-
 
 Mesh *mesh;
 ent obj;
@@ -80,29 +73,3 @@ void on_reload(State *state, Renderer *renderer, void **my_data)
 {
 	init_global(*(CustomData**)my_data);
 }
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-	#include <stdio.h>
-	game_start *VERSIONED_PROC(get_start)()
-	{
-		puts("getting start");
-		return (game_start*)(&start);
-	}
-
-	game_update *VERSIONED_PROC(get_update)()
-	{
-		puts("getting update");
-		return (game_update*)(&update);
-	}
-
-	game_on_reload *VERSIONED_PROC(get_on_reload)()
-	{
-		puts("getting on_reload");
-		return (game_on_reload*)(&on_reload);
-	}
-
-#ifdef __cplusplus
-}
-#endif

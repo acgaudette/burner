@@ -13,10 +13,22 @@
 
 #define TITLE "burner"
 
+#if defined(DEVELOPMENT_MODE)
+    #warning "DEV"
+#else
+    #warning "NON-DEV"
+#endif
+
 void window_error(int error, const char *message)
 {
 	fprintf(stderr, "Window error: %s\n", message);
 }
+
+struct FileConfig {
+	const char * src_path;
+	const char * lib_name;
+	const char * shaders_path;
+};
 
 struct GameLibrary {
 	void *lib;
@@ -25,6 +37,8 @@ struct GameLibrary {
 	game_on_reload *on_reload;
 
 	time_t prev_load_time;
+
+	FileConfig conf;
 };
 
 bool file_modification_time_try_to_update(const char * const file_path, time_t *time_to_update)
@@ -204,7 +218,7 @@ void window_focus_callback(GLFWwindow* window, int focused)
 }
 
 
-int Engine_init(const char * const src_name, void* custom_data)
+int Engine::run(const char * const src_name, void* custom_data, size_t custom_data_size)
 {
 	/* Load game function pointers */
 
@@ -213,6 +227,23 @@ int Engine_init(const char * const src_name, void* custom_data)
 	GameLibrary_load(game);
 
 	void* user_data = custom_data;
+	size_t user_data_size = custom_data_size;
+
+	struct SaveStates {
+		void* data;
+		Input input_states[10];
+		double time_states[10];
+		double last_time_states[10];
+	} saves;
+	memset(&saves, 0, sizeof(SaveStates));
+
+	if (user_data != nullptr) { 
+		saves.data = calloc(10, custom_data_size); // just one save for now, basic testing
+		if (saves.data == nullptr) {
+			fprintf(stderr, "Error memory allocation, aborting");
+			panic();
+		}
+	}
 
 
 	/* Create window */
@@ -264,25 +295,15 @@ int Engine_init(const char * const src_name, void* custom_data)
 
 	double time;
 	double last_time = 0;
+	double time_offset = 0;
 
 	while (true) {
 		if (glfwWindowShouldClose(window)) {
 			break;
 		}
 
-// temp, think about configuring this in another way, simply keeping hard-coded for now
-#define DEVELOPMENT_MODE
 		// Reload main project if in development mode
-#if defined(DEVELOPMENT_MODE)
-		if (poll_src_changes || input.down(GRAVE_ACCENT)) {
-			if (file_modification_time_try_to_update(src_name, &game.prev_load_time)) {
-				puts("reloading library");
-				if (GameLibrary_reload(game) && game.on_reload != nullptr) {
-					game.on_reload(&state, &renderer, &user_data);
-				}
-			}
-		}
-#endif
+
 
 		// Handle input
 		glfwPollEvents();
@@ -294,13 +315,50 @@ int Engine_init(const char * const src_name, void* custom_data)
 			) == GLFW_PRESS;
 		}
 
+#if defined(DEVELOPMENT_MODE)
+		if (poll_src_changes || input.down(GRAVE_ACCENT)) {
+			if (file_modification_time_try_to_update(src_name, &game.prev_load_time)) {
+				puts("reloading library");
+				if (GameLibrary_reload(game) && game.on_reload != nullptr) {
+					game.on_reload(&state, &renderer, &user_data);
+				}
+			}
+		}
+
+		// early save states testing, not 100% sure whether I covered all cases for time "travel"
+		if (input.down(SLASH)) {
+
+			#define ANSI_COLOR_RED     "\x1b[31m"
+			#define ANSI_COLOR_GREEN   "\x1b[32m"
+			#define ANSI_COLOR_YELLOW  "\x1b[33m"
+			#define ANSI_COLOR_BLUE    "\x1b[34m"
+			#define ANSI_COLOR_MAGENTA "\x1b[35m"
+			#define ANSI_COLOR_CYAN    "\x1b[36m"
+			#define ANSI_COLOR_RESET   "\x1b[0m"
+
+			memcpy(saves.data, (char*)user_data, user_data_size);
+			saves.input_states[0] = input;
+			saves.time_states[0] = time;
+
+			printf(ANSI_COLOR_GREEN "State saved, [slot=%d, time=%f]" ANSI_COLOR_RESET "\n", 
+				0, time);
+
+		} else if (input.down(PERIOD)) {
+			memcpy(user_data, saves.data, user_data_size);
+			time_offset = glfwGetTime() - saves.time_states[0]; // TODO could be a little inaccurate?
+
+			printf(ANSI_COLOR_GREEN "State restored, [slot=%d, time=%f]" ANSI_COLOR_RESET "\n", 
+				0, saves.time_states[0]);
+		}
+#endif
+
 
 
 
 
 		// Time
 		last_time = time;
-		time = glfwGetTime();
+		time = glfwGetTime() - time_offset;
 		double delta = time - last_time;
 
 		// Execute game update hook
@@ -316,6 +374,8 @@ int Engine_init(const char * const src_name, void* custom_data)
 
 	// Linux
 	dlclose(game.lib);
+
+	free(saves.data);
 
 	glfwTerminate();
 	printf("Terminated.\n");

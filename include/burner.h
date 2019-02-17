@@ -13,24 +13,65 @@ typedef game_update* (game_update_loader)();
 typedef void (game_on_reload)(State*, Renderer*, void**);
 typedef game_on_reload* (game_on_reload_loader)();
 
-void start(State *state, Renderer *renderer, void **my_data);
+
+// forward declare these functions so the game code need not include
+// reload getters
+void start(State*, Renderer*, void**);
 Mat4 update(
-    State *state,
-    Renderer *renderer,
-    Input *input,
-    double time,
-    double delta,
-    void *my_data
+    State*,
+    Renderer*,
+    Input*,
+    double,
+    double,
+    void*
 );
-void on_reload(State *state, Renderer *renderer, void **my_data);
+void on_reload(State*, Renderer*, void**);
 
-// macro for start, update, ... procedure parameter lists?
-//#define START_PROC(name_) name_##(State *state, Renderer *renderer, void **my_data)
+#define PASTE2_INTERAL__(x, y) x##y
+#define PASTE_INTERNAL__(x, y) PASTE2_INTERAL__(x, y)
+#include "../out/version.h"
 
+#if defined(DEVELOPMENT_MODE)
+    #pragma message("DEV MODE")
+    #define VERSIONED_PROC(name) PASTE_INTERNAL__(name, LIB_VERSION)
+#else
+    #pragma message("RELEASE MODE")
+    #define VERSIONED_PROC(name) name
+#endif
 
+#if defined(GAME_CODE)
 
-int Engine_init(const char * const src_name, void* custom_data = nullptr);
+#ifdef __cplusplus
+extern "C" {
+#endif
+    game_start *VERSIONED_PROC(get_start)()
+    {
+        return (game_start*)(&start);
+    }
+
+    game_update *VERSIONED_PROC(get_update)()
+    {
+        return (game_update*)(&update);
+    }
+
+    game_on_reload *VERSIONED_PROC(get_on_reload)()
+    {
+        return (game_on_reload*)(&on_reload);
+    }
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+#undef PASTE_INTERNAL__
+#undef PASTE2_INTERNAL__
+
 struct Engine {
+    
+    // TODO local fields
+    int run(const char * const src_name, void* custom_data = nullptr, size_t custom_data_size = 0);
 };
 
 #endif

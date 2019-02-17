@@ -1,12 +1,10 @@
 #include "simple_common.h"
-#include <assert.h>
 
 int main(void)
 {
     CustomData data = {};
+    memset(&data, 0, sizeof(data));
 
-    assert(data.vertex_count == 0);
-    assert(data.index_count == 0);
-
-    return Engine_init("examples/simple.cc", (void *)&data);
+    Engine catalyst;
+    return catalyst.run("examples/simple.cc", (void *)&data, sizeof(data));
 }

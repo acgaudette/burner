@@ -4,7 +4,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
 
 echo "#define LIB_VERSION 0" >| "out/version.h";
 
-if g++ -fPIC examples/simple.cc -Wall -O0 \
+if g++ -fPIC examples/simple.cc -DDEVELOPMENT_MODE -DGAME_CODE -Wall -O0 \
 -I include \
 -L out -lburner \
 -shared -o out/libjam.so

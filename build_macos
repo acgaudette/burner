@@ -1,11 +1,31 @@
 #!/usr/bin/env bash
 
+BUILD_MODE=""
+
+if [ -z ${1} ]; then
+    echo "Compiling in development mode";
+    BUILD_MODE="DEVELOPMENT_MODE"
+else
+    if [ ${1} == "-r" ]; then
+        echo "Compiling in release mode";
+        BUILD_MODE="RELEASE_MODE"
+    elif [ ${1} == "-d" ]; then
+        echo "Compiling in development mode";
+        BUILD_MODE="DEVELOPMENT_MODE"
+    else
+        echo "Error unknown flag"${1};
+        exit -1; 
+    fi
+fi
+
 DEP="
 -I lib/gl3w/include lib/gl3w/src/gl3w.c \
 -I lib/glfw/include -L lib/glfw/src -lglfw3 \
 -framework Cocoa -framework IOKit -framework CoreVideo \
--framework OpenGL -lpthread -ldl -lm
+-framework OpenGL -lpthread -ldl -lm \
 "
+
+BUILD_FLAGS="-D"$BUILD_MODE
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
 mkdir -p out
@@ -13,12 +33,12 @@ mkdir -p out
 # Build dynamic library
 g++ -fPIC -rdynamic -Wall -O0 \
 src/*.cc -I include \
-$DEP \
+$DEP $BUILD_FLAGS \
 -shared -o out/libburner.so
 
 # Build host process
 g++ -Wall -O0 \
 examples/simple_main.cc src/host/*.cc -I include \
 -L out -rdynamic -lburner \
-$DEP \
+$DEP $BUILD_FLAGS \
 -o out/burner
