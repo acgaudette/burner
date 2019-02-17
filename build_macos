@@ -11,7 +11,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
 mkdir -p out
 
 # Build dynamic library
-g++ -fPIC -Wall -O0 \
+g++ -fPIC -rdynamic -Wall -O0 \
 src/*.cc -I include \
 $DEP \
 -shared -o out/libburner.so
@@ -19,6 +19,6 @@ $DEP \
 # Build host process
 g++ -Wall -O0 \
 examples/simple_main.cc src/host/*.cc -I include \
--L out -lburner \
+-L out -rdynamic -lburner \
 $DEP \
 -o out/burner

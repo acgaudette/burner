@@ -14,6 +14,7 @@ enum Key {
 	K,
 	L,
 	SPACE,
+	GRAVE_ACCENT,
 	_key_count,
 };
 

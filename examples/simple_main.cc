@@ -1,12 +1,12 @@
-#include <math.h>
-#include "burner.h"
+#include "simple_common.h"
+#include <assert.h>
 
 int main(void)
 {
-    struct MyData {
-        Mesh mesh;
-        ent obj;
-    } data;
+    CustomData data = {};
 
-    return Engine_init((void *)&data);
+    assert(data.vertex_count == 0);
+    assert(data.index_count == 0);
+
+    return Engine_init("examples/simple.cc", (void *)&data);
 }

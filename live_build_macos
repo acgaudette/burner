@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+
+if [ -z ${1} ]; then 
+    echo "Error: file unspecified";
+    exit -1;
+else
+    if [ -z ${2} ]; then
+        echo "Error: so name unspecified";
+        exit -1;
+    fi
+    echo "loading '$1' to build '$2'";
+fi
+
+g++ -fPIC $1 -Wall -O0 \
+-I include \
+-L out -lburner \
+-shared -o $2

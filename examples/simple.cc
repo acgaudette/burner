@@ -1,19 +1,25 @@
-#include <math.h>
-#include "burner.h"
+#include "simple_common.h"
+#define PASTE2(x, y) x##y
+#define PASTE(x, y) PASTE2(x, y)
+#include "../out/version.h"
+#define VERSIONED_PROC(name) PASTE(name, LIB_VERSION)
+// TODO move the above boilerplate elsewhere
 
-// Mesh mesh;
-// ent obj;
 
-struct MyData {
-    Mesh mesh;
-    ent obj;
-};
 
-#include <stdlib.h>
-#include<stdio.h>
-void start(State *state, Renderer *renderer, void ** my_data)
+Mesh *mesh;
+ent obj;
+
+// create custom function to hoist the custom data into global scope for convenience
+void init_global(CustomData *data)
 {
-	MyData* data = (*(MyData**)my_data);
+	mesh = &data->mesh;
+	obj = data->obj;
+}
+
+void start(State *state, Renderer *renderer, void **my_data)
+{
+	CustomData* data = *(CustomData**)my_data;
 
 	float alt = sqrt(3) * 0.5f;
 	float apo = alt / 3;
@@ -41,12 +47,14 @@ void start(State *state, Renderer *renderer, void ** my_data)
 		4, 5, 6,
 		5, 3, 6
 	};
+	memcpy(data->indices, ind, sizeof(ind));
 
-	Vertex vert[7];
-	data->mesh = Mesh(vert, 7, pos, ind, 12);
+	data->mesh = Mesh(&data->vertices[0], 7, pos, &data->indices[0], 12);
 
 	size_t tetra = renderer->add_mesh(&data->mesh);
 	data->obj = state->add_ent(tetra);
+
+	init_global(data);
 }
 
 Mat4 update(
@@ -57,36 +65,44 @@ Mat4 update(
 	double delta,
 	void *my_data
 ) {
-	MyData* data = (MyData*)my_data;
-
-
+	//CustomData* data = (CustomData*)my_data;
 
 	Instance instance;
 	instance.color = Color { 1, 0.5f, 0.3f };
 	instance.model = Mat4::translation(0, -0.25f, 1.5f)
 		* Mat4::rotation_y(time);
-	state->update_ent(data->obj, instance);
+	state->update_ent(obj, instance);
 
 	return Mat4::id();
+}
+
+void on_reload(State *state, Renderer *renderer, void **my_data)
+{
+	init_global(*(CustomData**)my_data);
 }
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-	game_start *get_start()
+	#include <stdio.h>
+	game_start *VERSIONED_PROC(get_start)()
 	{
+		puts("getting start");
 		return (game_start*)(&start);
 	}
 
-	game_on_reload *get_on_reload()
+	game_update *VERSIONED_PROC(get_update)()
 	{
-		return (game_on_reload*)(nullptr);
-	}
-
-	game_update *get_update()
-	{
+		puts("getting update");
 		return (game_update*)(&update);
 	}
+
+	game_on_reload *VERSIONED_PROC(get_on_reload)()
+	{
+		puts("getting on_reload");
+		return (game_on_reload*)(&on_reload);
+	}
+
 #ifdef __cplusplus
 }
 #endif
