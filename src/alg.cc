@@ -3,6 +3,63 @@
 
 #define PI 3.14159265
 
+Color Color::hsv(float h, float s, float v)
+{
+	// Gray
+	if (s == 0) {
+		return Color { v, v, v };
+	}
+
+	float r, g, b;
+
+	// Six color sections
+	h *= 6 * (1 - __FLT_EPSILON__);
+	unsigned int section = floor(h);
+	float t = h - section;
+
+	// Lower color value
+	float bot = v * (1 - s);
+
+	// Interpolated values
+	float up = v * (1 - s * t);
+	float dn = v * (1 - s * (1 - t));
+
+	switch (section) {
+	case 0: // Red to yellow
+		r = v;
+		g = dn;
+		b = bot;
+		break;
+	case 1: // Yellow to green
+		r = up;
+		g = v;
+		b = bot;
+		break;
+	case 2: // Green to cyan
+		r = bot;
+		g = v;
+		b = dn;
+		break;
+	case 3: // Cyan to blue
+		r = bot;
+		g = up;
+		b = v;
+		break;
+	case 4: // Blue to purple
+		r = dn;
+		g = bot;
+		b = v;
+		break;
+	default: // Purple to red
+		r = v;
+		g = bot;
+		b = up;
+		break;
+	}
+
+	return Color { r, g, b };
+}
+
 Color Color::operator*(const float &f)
 {
 	return Color {

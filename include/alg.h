@@ -7,6 +7,8 @@ struct Color
 	float g;
 	float b;
 
+	static Color hsv(float, float, float);
+
 	Color operator*(const float&);
 	Color operator*(const Color&);
 	Color operator+(const Color&);
