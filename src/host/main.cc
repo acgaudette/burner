@@ -17,7 +17,7 @@ int main()
 {
 	/* Load game function pointers */
 
-	void *lib = dlopen("./out/libjam.so", RTLD_NOW | RTLD_LOCAL);
+	void *lib = dlopen("./lib/libjam.so", RTLD_NOW | RTLD_LOCAL);
 
 	if (!lib) {
 		char *err = dlerror();
