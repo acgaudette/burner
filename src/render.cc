@@ -5,6 +5,11 @@
 #include <GLFW/glfw3.h> // OpenGL included
 #include "render.h"
 
+#ifdef INLINE_GLSL
+#include "glsl_core_vert.h"
+#include "glsl_core_frag.h"
+#endif
+
 #define LOG_BUF 1024
 
 void panic()
