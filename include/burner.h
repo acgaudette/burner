@@ -74,4 +74,8 @@ struct Engine {
     int run(const char * const src_name, void* custom_data = nullptr, size_t custom_data_size = 0);
 };
 
+#ifdef BURNER_EXPERIMENTAL
+#include "experimental.h"
+#endif
+
 #endif

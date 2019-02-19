@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GLFW/glfw3.h>
+
 #include "burner.h"
 
 // Linux headers
@@ -15,8 +16,17 @@
 
 #if defined(DEVELOPMENT_MODE)
     #warning "DEV"
+
+	#define call_start(game__, state__, renderer__, user_data__) (* game__.start)(state__, renderer__, user_data__)
+	#define call_update(game__, state__, renderer__, input__, time__, delta__, user_data__) (* game__.update)(state__, renderer__, input__, time__, delta__, user_data__)
+	#define call_on_reload(game__, state__, renderer__, user_data__) (* game__.on_reload)(state__, renderer__, user_data__)
 #else
-    #warning "NON-DEV"
+    #warning "RELEASE"
+
+	#define call_start(game__, state__, renderer__, user_data__) start(state__, renderer__, user_data__)
+	#define call_update(game__, state__, renderer__, input__, time__, delta__, user_data__) update(state__, renderer__, input__, time__, delta__, user_data__)
+	#define call_on_reload(game__, state__, renderer__, user_data__)
+
 #endif
 
 void window_error(int error, const char *message)
@@ -229,21 +239,10 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 	void* user_data = custom_data;
 	size_t user_data_size = custom_data_size;
 
-	struct SaveStates {
-		void* data;
-		Input input_states[10];
-		double time_states[10];
-		double last_time_states[10];
-	} saves;
-	memset(&saves, 0, sizeof(SaveStates));
-
-	if (user_data != nullptr) { 
-		saves.data = calloc(10, custom_data_size); // just one save for now, basic testing
-		if (saves.data == nullptr) {
-			fprintf(stderr, "Error memory allocation, aborting");
-			panic();
-		}
-	}
+#if defined(BURNER_EXPERIMENTAL)
+	SaveStates saves;
+	init(&saves, 1, user_data_size);
+#endif
 
 
 	/* Create window */
@@ -289,7 +288,8 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 	Input input;
 
 	// Execute game start hook
-	(*game.start)(&state, &renderer, &user_data);
+	call_start(game, &state, &renderer, &user_data);
+
 
 	/* Main loop */
 
@@ -325,6 +325,7 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 			}
 		}
 
+#if defined(BURNER_EXPERIMENTAL) // TODO put into single function
 		// early save states testing, not 100% sure whether I covered all cases for time "travel"
 		if (input.down(SLASH)) {
 
@@ -352,9 +353,7 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 		}
 #endif
 
-
-
-
+#endif
 
 		// Time
 		last_time = time;
@@ -362,7 +361,7 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 		double delta = time - last_time;
 
 		// Execute game update hook
-		Mat4 view = (*game.update)(&state, &renderer, &input, time, delta, user_data);
+		Mat4 view = call_update(game, &state, &renderer, &input, time, delta, user_data);
 
 		// Render
 		renderer.render(view, &state);
@@ -375,7 +374,9 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 	// Linux
 	dlclose(game.lib);
 
-	free(saves.data);
+#if defined(BURNER_EXPERIMENTAL)
+	deinit(&saves);
+#endif
 
 	glfwTerminate();
 	printf("Terminated.\n");
