@@ -42,6 +42,18 @@ void load_gl_functions()
 
 GLuint load_shader(const char *filename, GLenum type, char *log)
 {
+#ifdef INLINE_GLSL
+	const char *buffer;
+
+	switch (type) {
+	case GL_VERTEX_SHADER:
+		buffer = core_vert;
+		break;
+	case GL_FRAGMENT_SHADER:
+		buffer = core_frag;
+		break;
+	}
+#else
 	/* Read file into string */
 
 	FILE *file = fopen(filename, "r");
@@ -88,6 +100,7 @@ GLuint load_shader(const char *filename, GLenum type, char *log)
 		perror("Error");
 		panic();
 	}
+#endif
 
 	GLuint shader = glCreateShader(type);
 	glShaderSource(shader, 1, &buffer, NULL);
@@ -109,8 +122,10 @@ GLuint load_shader(const char *filename, GLenum type, char *log)
 		panic();
 	}
 
+#ifndef INLINE_GLSL
 	free(buffer);
 	printf("Read %lu bytes from \"%s\"\n", count, filename);
+#endif
 	return shader;
 }
 
