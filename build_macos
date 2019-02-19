@@ -20,6 +20,17 @@ fi
 
 if [ $BUILD_MODE == "DEVELOPMENT_MODE" ]; then
 
+    # build from anywhere
+    SOURCE="${BASH_SOURCE[0]}"
+    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+      DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+      SOURCE="$(readlink "$SOURCE")"
+      [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+    cd $DIR
+
     DEP="
     -I lib/gl3w/include lib/gl3w/src/gl3w.c \
     -I lib/glfw/include -L lib/glfw/src -lglfw3 \
@@ -47,6 +58,20 @@ if [ $BUILD_MODE == "DEVELOPMENT_MODE" ]; then
 
 else
     echo "Release Mode"
+
+    # build from anywhere
+    SOURCE="${BASH_SOURCE[0]}"
+    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+      DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+      SOURCE="$(readlink "$SOURCE")"
+      [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+    cd $DIR
+
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
+
 
     DEP_INTERMEDIATE="
     -I lib/gl3w/include lib/gl3w/src/gl3w.c \
@@ -79,9 +104,29 @@ else
     # build main executable
     echo "#define LIB_VERSION" >| "out/version.h";
     g++ simple_main.o examples/simple.cc -DGAME_CODE -DBURNER_EXPERIMENTAL -Wall -O2 -I include \
-    $DEP $BUILD_FLAGS out/libburner.a -o out/ex
+    -Wl,-rpath out $DEP $BUILD_FLAGS out/libburner.a -o out/ex
 
     #-Wl,-rpath out -L out $DEP $BUILD_FLAGS out/libburner.a -o out/ex
 
     rm ./*.o
+
+
+    mkdir -p out/dist
+    mkdir -p out/dist/shaders
+    cp -r ./shaders out/dist/
+    mv out/ex out/dist/ex
+
+    echo '#!/usr/bin/env bash     # build from anywhere
+    SOURCE="${BASH_SOURCE[0]}"
+    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+      DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+      SOURCE="$(readlink "$SOURCE")"
+      [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+    cd $DIR 
+    ./ex' >| "out/dist/play"
+
+    chmod +x out/dist/play
 fi

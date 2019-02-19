@@ -4,6 +4,9 @@
 #include <GL/gl3w.h> // Runtime function loader (core only)
 #include <GLFW/glfw3.h> // OpenGL included
 #include "render.h"
+#include <unistd.h>
+
+#define MIN(a, b) ((a > b) ? b : a)
 
 #define LOG_BUF 1024
 
