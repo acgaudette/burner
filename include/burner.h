@@ -39,7 +39,7 @@ void on_reload(State*, Renderer*, void**);
     #define VERSIONED_PROC(name) name
 #endif
 
-#if defined(GAME_CODE)
+#if defined(GAME_CODE) && !defined(RELEASE_MODE)
 
 #ifdef __cplusplus
 extern "C" {

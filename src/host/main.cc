@@ -232,17 +232,15 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 {
 	/* Load game function pointers */
 
+
 	GameLibrary game;
+#if defined(DEVELOPMENT_MODE)
 	memset(&game, 0, sizeof(game));
 	GameLibrary_load(game);
+#endif
 
 	void* user_data = custom_data;
 	size_t user_data_size = custom_data_size;
-
-#if defined(BURNER_EXPERIMENTAL)
-	SaveStates saves;
-	init(&saves, 1, user_data_size);
-#endif
 
 
 	/* Create window */
@@ -290,6 +288,15 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 	// Execute game start hook
 	call_start(game, &state, &renderer, &user_data);
 
+#if defined(BURNER_EXPERIMENTAL)
+	SaveStates saves;
+	init(&saves, 1, user_data_size);
+
+	memcpy(saves.data, (char*)user_data, user_data_size);
+	saves.input_states[0] = input;
+	saves.time_states[0] = glfwGetTime();
+#endif
+
 
 	/* Main loop */
 
@@ -325,7 +332,7 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 			}
 		}
 
-#if defined(BURNER_EXPERIMENTAL) // TODO put into single function
+#if defined(DEVELOPMENT_MODE) && defined(BURNER_EXPERIMENTAL) // TODO put into single function
 		// early save states testing, not 100% sure whether I covered all cases for time "travel"
 		if (input.down(SLASH)) {
 
@@ -346,7 +353,7 @@ int Engine::run(const char * const src_name, void* custom_data, size_t custom_da
 
 		} else if (input.down(PERIOD)) {
 			memcpy(user_data, saves.data, user_data_size);
-			time_offset = glfwGetTime() - saves.time_states[0]; // TODO could be a little inaccurate?
+			time_offset = glfwGetTime() - saves.time_states[0];
 
 			printf(ANSI_COLOR_GREEN "State restored, [slot=%d, time=%f]" ANSI_COLOR_RESET "\n", 
 				0, saves.time_states[0]);

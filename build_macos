@@ -18,27 +18,70 @@ else
     fi
 fi
 
-DEP="
--I lib/gl3w/include lib/gl3w/src/gl3w.c \
--I lib/glfw/include -L lib/glfw/src -lglfw3 \
--framework Cocoa -framework IOKit -framework CoreVideo \
--framework OpenGL -lpthread -ldl -lm \
-"
+if [ $BUILD_MODE == "DEVELOPMENT_MODE" ]; then
 
-BUILD_FLAGS="-D"$BUILD_MODE
+    DEP="
+    -I lib/gl3w/include lib/gl3w/src/gl3w.c \
+    -I lib/glfw/include -L lib/glfw/src -lglfw3 \
+    -framework Cocoa -framework IOKit -framework CoreVideo \
+    -framework OpenGL -lpthread -ldl -lm \
+    "
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
-mkdir -p out
+    BUILD_FLAGS="-D"$BUILD_MODE
 
-# Build dynamic library
-g++ -fPIC -Wall -O0 -DBURNER_EXPERIMENTAL \
-src/*.cc -I include \
-$DEP $BUILD_FLAGS \
--shared -o out/libburner.so
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/out
+    mkdir -p out
 
-# Build host process
-g++ -Wall -O0 -DBURNER_EXPERIMENTAL \
-examples/simple_main.cc src/host/*.cc -I include \
--L out -lburner \
-$DEP $BUILD_FLAGS \
--o out/burner
+    # Build dynamic library
+    g++ -fPIC -Wall -O0 -DBURNER_EXPERIMENTAL \
+    src/*.cc -I include \
+    $DEP $BUILD_FLAGS \
+    -shared -o out/libburner.so
+
+    # Build host process
+    g++ -Wall -O0 -DBURNER_EXPERIMENTAL \
+    examples/simple_main.cc src/host/*.cc -I include \
+    -Wl,-rpath out -L out -lburner \
+    $DEP $BUILD_FLAGS \
+    -o out/burner
+
+else
+    echo "Release Mode"
+
+    DEP_INTERMEDIATE="
+    -I lib/gl3w/include lib/gl3w/src/gl3w.c \
+    -I lib/glfw/include -L lib/glfw/src\
+    "
+
+    DEP="
+    -I lib/gl3w/include lib/gl3w/src/gl3w.c \
+    -I lib/glfw/include -L lib/glfw/src -lglfw3 \
+    -framework Cocoa -framework IOKit -framework CoreVideo \
+    -framework OpenGL -lpthread -ldl -lm \
+    "
+
+    BUILD_FLAGS="-D"$BUILD_MODE
+
+    mkdir -p out
+
+    # build burner library
+    g++ -c -Wall -O2 -DBURNER_EXPERIMENTAL \
+    src/*.cc src/host/*.cc -I include \
+    $DEP_INTERMEDIATE $BUILD_FLAGS 
+    # create static library
+    ar cr out/libburner.a *.o
+
+    # build main entry point
+    g++ -c -Wall -O2 -DBURNER_EXPERIMENTAL \
+    examples/simple_main.cc -I include \
+    $DEP_INTERMEDIATE $BUILD_FLAGS
+
+    # build main executable
+    echo "#define LIB_VERSION" >| "out/version.h";
+    g++ simple_main.o examples/simple.cc -DGAME_CODE -DBURNER_EXPERIMENTAL -Wall -O2 -I include \
+    $DEP $BUILD_FLAGS out/libburner.a -o out/ex
+
+    #-Wl,-rpath out -L out $DEP $BUILD_FLAGS out/libburner.a -o out/ex
+
+    rm ./*.o
+fi

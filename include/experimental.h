@@ -29,10 +29,9 @@ inline void *calloc_x(size_t count, size_t size)
 }
 
 struct SaveStates {
-    void* data;
+    void *data;
     Input input_states[10];
     double time_states[10];
-    double last_time_states[10];
     size_t slot_count;
     size_t data_bsize;
 };
