@@ -301,6 +301,18 @@ Mat4 Mat4::rotation_z(float rad)
 	return Mat4(values);
 }
 
+Mat4 Mat4::scale(float x, float y, float z)
+{
+	float values[] = {
+		x, 0, 0, 0,
+		0, y, 0, 0,
+		0, 0, z, 0,
+		0, 0, 0, 1,
+	};
+
+	return Mat4(values);
+}
+
 Mat4 Mat4::perspective(float fov, float aspect, float near, float far)
 {
 	float half_angle = (0.5 * fov) * PI / 180;
