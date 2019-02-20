@@ -8,7 +8,7 @@
 #define HEIGHT 720
 #define MAJOR 4
 #define MINOR 0
-#define MAX_MESH 64
+#define MAX_MESH 1024
 
 void panic();
 
