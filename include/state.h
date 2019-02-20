@@ -3,7 +3,7 @@
 
 #include "alg.h"
 
-#define MAX_ENTY 1024
+#define MAX_ENTY 16384
 
 typedef size_t ent;
 
